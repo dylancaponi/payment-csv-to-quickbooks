@@ -1,0 +1,5 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+08/22/2024,1201.84,"'=HYPERLINK(""http://example.invalid"")","'=HYPERLINK(""http://example.invalid"") - Table, oak",PAYSQ0005,
+08/23/2024,-35.00,,Scarf,PAYSQ0004,
+08/23/2024,29.20,,Lamp,PAYSQ0003,
+08/24/2024,19.47,Ana Placeholder,Ana Placeholder - Brooch,PAYSQ0001,

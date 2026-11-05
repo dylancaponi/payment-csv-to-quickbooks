@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse, write, TARGETS } from '../index.js';
-import { CASES, GOLDEN, readFixture } from '../test-support/fixtures.js';
+import { CASES, GOLDEN, readFixture, UNSUPPORTED } from '../test-support/fixtures.js';
 
 const update = process.env.UPDATE_GOLDEN === '1';
 mkdirSync(GOLDEN, { recursive: true });
@@ -15,6 +15,7 @@ describe('golden outputs', () => {
   for (const c of CASES) {
     const parsed = parse(c.source, readFixture(c.file), c.options);
     for (const t of TARGETS) {
+      if (UNSUPPORTED.has(`${c.source}>${t.id}`)) continue;
       const name = `${c.file.replace(/\.csv$/, '')}.${t.id}${t.extension === 'csv' ? '.csv' : ''}`;
       test(name, () => {
         const out = write(t.id, parsed.transactions, { sourceId: c.source });

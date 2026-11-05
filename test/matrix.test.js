@@ -2,7 +2,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { parse, write, detectSource } from '../index.js';
-import { CASES, TARGET_IDS, readFixture, centsOf } from '../test-support/fixtures.js';
+import { CASES, TARGET_IDS, readFixture, centsOf, UNSUPPORTED } from '../test-support/fixtures.js';
 import { validateOfx } from '../test-support/ofx-validator.js';
 import { checkQboCsv, checkXeroCsv, checkJournal } from '../test-support/csv-checks.js';
 
@@ -42,6 +42,10 @@ for (const c of CASES) {
     });
 
     for (const target of TARGET_IDS) {
+      if (UNSUPPORTED.has(`${c.source}>${target}`)) {
+        test(`refuses ${target} with a plain error`, () => assert.throws(() => write(target, parsed.transactions, { sourceId: c.source }), (e) => e.code === 'NOT_SUPPORTED' && e.message.length > 40));
+        continue;
+      }
       for (const split of [false, true]) {
         test(`writes ${target}${split ? ' (fees as separate rows)' : ''} and it validates`, () => {
           const out = write(target, parsed.transactions, { includeFeesAsSeparateRows: split, sourceId: c.source });

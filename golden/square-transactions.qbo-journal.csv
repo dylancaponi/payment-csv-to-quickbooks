@@ -1,0 +1,11 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20240823-1,08/23/2024,Sales of Product Income,,1234.56,Gross sales - Square payout DEPSQ0,
+BI-20240823-1,08/23/2024,Bank Charges & Fees,32.72,,Fees - Square payout DEPSQ0,
+BI-20240823-1,08/23/2024,Checking,1201.84,,Deposit - Square payout DEPSQ0,
+BI-20240824-1,08/24/2024,Sales of Product Income,,20.00,Gross sales - Square activity not yet paid out,
+BI-20240824-1,08/24/2024,Bank Charges & Fees,0.53,,Fees - Square activity not yet paid out,
+BI-20240824-1,08/24/2024,Uncategorized Asset,19.47,,Kept in Square balance - Square activity not yet paid out,
+BI-20240824-2,08/24/2024,Sales of Product Income,,30.00,Gross sales - Square payout DEPSQ1,
+BI-20240824-2,08/24/2024,Sales of Product Income,35.00,,Refunds - Square payout DEPSQ1,
+BI-20240824-2,08/24/2024,Bank Charges & Fees,0.80,,Fees - Square payout DEPSQ1,
+BI-20240824-2,08/24/2024,Checking,,5.80,Deposit - Square payout DEPSQ1,

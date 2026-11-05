@@ -38,7 +38,7 @@ export function normalizeTxns(transactions) {
     if (t.amount === undefined || t.amount === null) fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has no amount.`);
     const out = { ...t };
     out.amount = moneyField(t.amount, i, 'amount', t.date);
-    for (const k of ['gross', 'fee', 'net', 'tax']) { const v = moneyField(t[k], i, k, t.date); if (v === undefined) delete out[k]; else out[k] = v; }
+    for (const k of ['gross', 'fee', 'net', 'tax', 'tips', 'giftCardSales']) { const v = moneyField(t[k], i, k, t.date); if (v === undefined) delete out[k]; else out[k] = v; }
     out.description = textField(t.description, i, 'description');
     const cur = t.currency === undefined || t.currency === null || t.currency === '' ? 'USD' : t.currency;
     if (typeof cur !== 'string' || !/^[A-Za-z]{3}$/.test(cur)) fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has an invalid currency "${String(cur)}". Use a 3-letter code such as USD.`);

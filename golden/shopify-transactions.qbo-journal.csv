@@ -1,0 +1,12 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20231012-1,10/12/2023,Sales of Product Income,,500.00,Gross sales - Shopify payout shopify-2023-10-12-CZK,
+BI-20231012-1,10/12/2023,Bank Charges & Fees,20.25,,Fees - Shopify payout shopify-2023-10-12-CZK,
+BI-20231012-1,10/12/2023,Checking,479.75,,Deposit - Shopify payout shopify-2023-10-12-CZK,
+BI-20231031-1,10/31/2023,Sales of Product Income,,2636.49,Gross sales - Shopify activity not yet paid out,
+BI-20231031-1,10/31/2023,Bank Charges & Fees,107.33,,Fees - Shopify activity not yet paid out,
+BI-20231031-1,10/31/2023,Uncategorized Asset,2529.16,,Kept in Shopify balance - Shopify activity not yet paid out,
+BI-20231101-1,11/01/2023,Sales of Product Income,,1000.00,Gross sales - Shopify payout shopify-2023-11-01-CZK,
+BI-20231101-1,11/01/2023,Sales of Product Income,738.51,,Refunds - Shopify payout shopify-2023-11-01-CZK,
+BI-20231101-1,11/01/2023,Bank Charges & Fees,40.50,,Fees - Shopify payout shopify-2023-11-01-CZK,
+BI-20231101-1,11/01/2023,Uncategorized Expense,12.00,,Adjustments - Shopify payout shopify-2023-11-01-CZK,
+BI-20231101-1,11/01/2023,Checking,208.99,,Deposit - Shopify payout shopify-2023-11-01-CZK,

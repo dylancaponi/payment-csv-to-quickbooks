@@ -1,0 +1,7 @@
+Date,Description,Amount
+08/01/2024,Received money from Acme Ltd - Invoice 42,1500.00
+08/05/2024,Sent money to John Doe - Rent,-357.38
+08/05/2024,Wise Charges for: TRANSFER-101,-11.35
+08/10/2024,"Card transaction of 45.10 USD issued by Coffee, Inc",-45.10
+08/12/2024,"Card transaction of 10.00 USD refunded by Coffee, Inc",10.00
+08/15/2024,Converted 100.00 USD to 92.00 EUR,-100.00

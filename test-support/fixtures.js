@@ -28,9 +28,16 @@ export const CASES = [
   { file: 'airbnb-paid.csv', source: 'airbnb', count: 6, sumCents: 0 },
   { file: 'gumroad-payout.csv', source: 'gumroad', count: 5, sumCents: 2265 },
   { file: 'gumroad-sales.csv', source: 'gumroad', count: 5, sumCents: 10345 },
+  { file: 'square-transactions.csv', source: 'square', count: 4, sumCents: 121551 },
+  { file: 'shopify-transactions.csv', source: 'shopify-transactions', count: 5, sumCents: 321790, currency: 'CZK' },
+  { file: 'shopify-payouts.csv', source: 'shopify-payouts', count: 12, sumCents: -17954 },
+  { file: 'wise-statement.csv', source: 'wise', count: 6, sumCents: 99617 },
   { file: 'generic-bank-debit-credit.csv', source: 'generic-bank', count: 5, sumCents: 315960 },
   { file: 'generic-bank-signed.csv', source: 'generic-bank', count: 4, sumCents: 128295, options: { dateOrder: 'mdy' } },
 ];
+
+// Source and target pairs the engine refuses on purpose (plain EngineError).
+export const UNSUPPORTED = new Set(['wise>qbo-journal']);
 
 export const TARGET_IDS = ['qbo', 'qfx', 'ofx', 'qbo-csv-3', 'qbo-csv-4', 'xero-csv', 'qbo-journal'];
 

@@ -1,0 +1,7 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+08/01/2024,1500.00,Acme Ltd,Received money from Acme Ltd - Invoice 42,TRANSFER-100,
+08/05/2024,-357.38,John Doe,Sent money to John Doe - Rent,TRANSFER-101,
+08/05/2024,-11.35,Wise,Wise Charges for: TRANSFER-101,TRANSFER-101,
+08/10/2024,-45.10,"Coffee, Inc","Card transaction of 45.10 USD issued by Coffee, Inc",CARD-200,
+08/12/2024,10.00,"Coffee, Inc","Card transaction of 10.00 USD refunded by Coffee, Inc",CARD-201,
+08/15/2024,-100.00,,Converted 100.00 USD to 92.00 EUR,BALANCE-300,

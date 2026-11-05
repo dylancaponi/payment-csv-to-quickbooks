@@ -1,14 +1,14 @@
 # payment-csv-to-quickbooks
 
-Convert CSV exports from Venmo, Cash App, PayPal, Stripe, Etsy, Airbnb, Gumroad and any bank into files QuickBooks, Quicken and Xero accept: Web Connect (.qbo), .qfx, OFX, QuickBooks Online bank CSV, Xero bank statement CSV, and balanced QuickBooks Online journal entries per payout.
+Convert CSV exports from Venmo, Cash App, PayPal, Stripe, Square, Shopify Payments, Wise, Etsy, Airbnb, Gumroad and any bank into files QuickBooks, Quicken and Xero accept: Web Connect (.qbo), .qfx, OFX, QuickBooks Online bank CSV, Xero bank statement CSV, and balanced QuickBooks Online journal entries per payout.
 
-Plain ES modules, zero dependencies, no network calls. The same code runs in the browser and in Node 20+. 604 tests.
+Plain ES modules, zero dependencies, no network calls. The same code runs in the browser and in Node 20+.
 
 Want to convert a file without writing code? The free hosted converter runs this engine entirely in your browser (the file never leaves your device):
 
 https://booksready.dylan-caponi.workers.dev
 
-Sources: Venmo, Cash App, PayPal, Stripe (balance and payouts), Etsy, Airbnb, Gumroad, any bank CSV.
+Sources: Venmo, Cash App, PayPal, Stripe (balance and payouts), Square, Shopify Payments (transactions and payouts), Wise (bank files only, no journal), Etsy, Airbnb, Gumroad, any bank CSV.
 Targets: QuickBooks Web Connect (.qbo), Quicken (.qfx), OFX 1.0.2, QuickBooks Online bank CSV (3 or 4 columns), Xero bank statement CSV, QuickBooks Online journal entries (one balanced entry per payout or month).
 
 Format rules and their sources: `FORMATS.md`. Every id and option: `OPTIONS.md`.
@@ -46,6 +46,8 @@ In Node: `import { parse, write } from './index.js'` with `fs.readFileSync(path,
 Txn: `{ date: 'YYYY-MM-DD', description, amount, gross?, fee?, net?, tax?, currency, id?, type, counterparty?, payoutId?, payoutDate?, raw }`. `amount` is signed from the point of view of the account the export describes (money in positive), so a payout to the bank is negative. `type: 'transfer'` means money the user moved to or from their own bank; the journal books it as a transfer. See `OPTIONS.md` for every option.
 
 All thrown errors are `EngineError` (`code`, user-facing `message`, optional `details`), including bad option values and malformed transactions passed to `write()`. Unexpected internal failures surface as code `INTERNAL`.
+
+Journal entries are not supported for Wise statements: `write('qbo-journal', ...)` throws `NOT_SUPPORTED` when `options.sourceId` is `wise` or the transactions' `raw` rows carry a TransferWise ID / Wise ID column. Keep `raw` (or pass `sourceId`) when calling the API directly, or the check cannot see that the data came from Wise.
 
 ### Common write options
 

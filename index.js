@@ -12,6 +12,9 @@ import * as etsy from './src/sources/etsy.js';
 import * as airbnb from './src/sources/airbnb.js';
 import * as gumroad from './src/sources/gumroad.js';
 import * as generic from './src/sources/generic.js';
+import * as square from './src/sources/square.js';
+import * as shopify from './src/sources/shopify.js';
+import * as wise from './src/sources/wise.js';
 import { writeOfx } from './src/targets/ofx.js';
 import { writeQboCsv, writeXeroCsv } from './src/targets/csvbank.js';
 import { writeJournal } from './src/targets/journal.js';
@@ -33,6 +36,10 @@ const PARSERS = {
   etsy: { detect: (rows) => etsy.detect(rows), parse: etsy.parse },
   airbnb: { detect: (rows) => airbnb.detect(rows), parse: airbnb.parse },
   gumroad: { detect: (rows) => gumroad.detect(rows), parse: gumroad.parse },
+  square: { detect: (rows) => square.detect(rows), parse: square.parse },
+  'shopify-transactions': { detect: (rows) => shopify.detect(rows, 'shopify-transactions'), parse: shopify.parseTransactionsFile },
+  'shopify-payouts': { detect: (rows) => shopify.detect(rows, 'shopify-payouts'), parse: shopify.parsePayoutsFile },
+  wise: { detect: (rows) => wise.detect(rows), parse: wise.parse },
   'generic-bank': { detect: (rows) => generic.detect(rows), parse: generic.parse },
 };
 
@@ -59,6 +66,18 @@ function rowsOf(text, options = {}) {
   return parseCSV(text, { delimiter: options.delimiter });
 }
 
+// Exports from supported platforms that are not money movements (Square item
+// sales, Shopify orders and products): a plain "wrong export" message instead
+// of a bank-CSV guess.
+function wrongExportReason(rows) {
+  for (const f of [square.wrongExport, shopify.wrongExport]) {
+    let r = null;
+    try { r = f(rows); } catch { r = null; }
+    if (r) return r;
+  }
+  return null;
+}
+
 export function detectSource(text) {
   try { return detectImpl(text); } catch (e) { return { sourceId: null, confidence: 0, reason: internal(e).message }; }
 }
@@ -72,6 +91,8 @@ function detectImpl(text) {
   } catch (e) {
     return { sourceId: null, confidence: 0, reason: e instanceof EngineError ? e.message : 'The file could not be read as CSV.' };
   }
+  const wrong = wrongExportReason(rows);
+  if (wrong) return { sourceId: null, confidence: 0, reason: wrong };
   let best = { sourceId: null, confidence: 0, reason: '' };
   for (const [id, p] of Object.entries(PARSERS)) {
     let r;
@@ -79,7 +100,7 @@ function detectImpl(text) {
     if (r.score > best.confidence) best = { sourceId: id, confidence: r.score, reason: r.reason || '' };
   }
   if (!best.sourceId || best.confidence < 0.3) {
-    return { sourceId: null, confidence: best.confidence, reason: best.reason || "We couldn't recognize this file. It needs a header row with at least a date column and an amount column. If it came from Venmo, Cash App, PayPal, Stripe, Etsy, Airbnb or Gumroad, make sure you uploaded the original CSV download." };
+    return { sourceId: null, confidence: best.confidence, reason: best.reason || "We couldn't recognize this file. It needs a header row with at least a date column and an amount column. If it came from Venmo, Cash App, PayPal, Stripe, Square, Shopify, Wise, Etsy, Airbnb or Gumroad, make sure you uploaded the original CSV download." };
   }
   if (best.confidence < 0.5 && best.reason) best.reason += ' Check the preview before converting.';
   return best;
@@ -168,6 +189,10 @@ function parseImpl(sourceId, text, options = {}) {
   const p = Object.prototype.hasOwnProperty.call(PARSERS, id) ? PARSERS[id] : null;
   if (!p) fail('UNKNOWN_SOURCE', `Unknown source "${sourceId}". Choose one of: ${Object.keys(PARSERS).join(', ')}.`);
   const raw = rowsOf(text, options);
+  if (id === 'generic-bank') {
+    const wrong = wrongExportReason(raw.slice(0, 60));
+    if (wrong) fail('WRONG_SOURCE', wrong);
+  }
   const ctx = { meta: {}, delimiter: raw.delimiter };
   const rows = dropRepeatedHeaders(raw, warnings);
   const popts = { ...options, _ctx: ctx };

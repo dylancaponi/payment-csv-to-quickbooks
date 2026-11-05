@@ -1,0 +1,6 @@
+Transaction Date,Type,Order,Card Brand,Card Source,Payout Status,Payout Date,Available On,Amount,Fee,Net,Checkout,Payment Method Name,Presentment Amount,Presentment Currency,Currency,VAT
+2023-10-31 12:00:42 +0100,charge,#3099,master,online,pending,2023-12-01,2023-11-03,2636.49,107.33,2529.16,#42675990692187,card,113.98,USD,CZK,0.00
+2023-10-20 09:00:00 +0200,charge,#3080,visa,online,paid,2023-11-01,2023-10-22,1000.00,40.50,959.50,#42600000000001,card,1000.00,CZK,CZK,0.00
+2023-10-14 07:07:50 +0200,refund,#3055,master,online,paid,2023-11-01,2023-10-16,-738.51,0.00,-738.51,#42569948889435,card,29.90,EUR,CZK,0.00
+2023-10-13 23:59:59 +0200,adjustment,,,,paid,2023-11-01,2023-10-16,-12.00,0.00,-12.00,,,,,CZK,0.00
+2023-10-10 10:00:00 +0200,charge,#3050,visa,online,paid,2023-10-12,2023-10-12,500.00,20.25,479.75,#42500000000002,card,500.00,CZK,CZK,0.00

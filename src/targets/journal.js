@@ -17,11 +17,13 @@ import { writeCSV } from '../csv.js';
 import { summarizePayouts, NO_PAYOUT_KEY } from '../payouts.js';
 import { validateTxns, asciiText, truncate, slug, csvSafe } from './common.js';
 
-const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', 'generic-bank': 'Bank' };
+const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'generic-bank': 'Bank' };
 
 export const DEFAULT_ACCOUNTS = {
   bank: 'Checking',
   sales: 'Sales of Product Income',
+  tips: 'Tips owed to staff',
+  giftCards: 'Gift card liability',
   refunds: 'Sales of Product Income',
   fees: 'Bank Charges & Fees',
   taxes: 'Sales of Product Income',
@@ -65,6 +67,8 @@ export function journalLines(rows, options = {}) {
       lines.push({ account, debit: cents < 0 ? -cents : 0, credit: cents > 0 ? cents : 0, desc: `${desc} - ${what}` });
     };
     add(acct.sales, toCents(r.grossSales), 'Gross sales');
+    add(acct.tips, toCents(r.tipsCollected), 'Tips collected (not sales)');
+    add(acct.giftCards, toCents(r.giftCardSales), 'Gift cards sold (owed until redeemed)');
     add(acct.refunds, toCents(r.refunds), 'Refunds');
     add(acct.fees, toCents(r.fees), 'Fees');
     add(acct.taxes, toCents(r.taxes), 'Sales tax collected by marketplace');
@@ -98,7 +102,7 @@ export function journalLines(rows, options = {}) {
       add(acct.fundingCard, fromCard, `Funded by card or other source into ${label}`);
     }
     const diff = toCents(r.difference) + toBank - fromBank + toCard - fromCard; // clearing change from activity and payouts
-    add(acct.clearing, -diff, diff > 0 ? `Kept in ${label} balance` : `Paid from earlier ${label} balance`);
+    add(acct.clearing, -diff, diff > 0 ? `Kept in ${label} balance` : r.key === NO_PAYOUT_KEY ? `Taken from ${label} balance` : `Paid from earlier ${label} balance`);
     let dr = 0; let cr = 0;
     for (const l of lines) { dr += l.debit; cr += l.credit; }
     if (dr !== cr) fail('UNBALANCED', `Internal check failed: entry ${no} does not balance (${formatCents(dr)} vs ${formatCents(cr)}). Please report this file.`);
@@ -110,6 +114,13 @@ export function journalLines(rows, options = {}) {
 export function writeJournal(transactions, options = {}) {
   const warnings = [];
   transactions = validateTxns(transactions);
+  // A Wise statement does not say which incoming money is sales, owner
+  // top-ups, loans or refunds, and conversions move money between your own
+  // balances, so a journal built from it would put money in the wrong
+  // accounts. Only bank-feed files are offered for Wise.
+  if (options.sourceId === 'wise' || transactions.some((t) => t.raw && Object.keys(t.raw).some((k) => /^(transferwise|wise) id$/i.test(k.trim())))) {
+    fail('NOT_SUPPORTED', 'Journal entries are not available for Wise statements: the statement does not say which money coming in is sales and which is your own money, a loan or a refund, so the entries would be wrong. Choose a bank file instead (QuickBooks .qbo, QuickBooks Online CSV, Xero CSV, Quicken .qfx or OFX) and categorize each transaction in your accounting software.');
+  }
   const groupBy = options.groupBy || (transactions.some((t) => t.payoutId) ? 'payout' : 'month');
   let rows = summarizePayouts(transactions, { groupBy });
   if (options.currency !== undefined && options.currency !== null && !/^[A-Za-z]{3}$/.test(String(options.currency))) fail('BAD_OPTION', 'The currency option must be a 3-letter code such as USD.');
@@ -136,6 +147,8 @@ export function writeJournal(transactions, options = {}) {
   if (offs.length) warnings.push(`${offs.length} payout(s) do not equal the activity listed with them; the difference is booked to the clearing account so each entry still balances. Check those payouts.`);
   if (rows.some((r) => r.fundingToCard || r.fundingFromCard)) warnings.push(`Some payments were funded by (or paid to) a card or another source that is not recognisably your bank. They are booked to "${(options.accounts && options.accounts.fundingCard) || DEFAULT_ACCOUNTS.fundingCard}", not your bank account. Point that at the right credit card account in the options.`);
   if (rows.some((r) => r.paymentsSent)) warnings.push(`Money you sent to other people is booked to "${(options.accounts && options.accounts.paymentsSent) || DEFAULT_ACCOUNTS.paymentsSent}", not deducted from sales. Recategorize it in QuickBooks, or set the account name in the options.`);
+  if (rows.some((r) => r.tipsCollected)) warnings.push(`Tips collected with sales are booked to "${(options.accounts && options.accounts.tips) || DEFAULT_ACCOUNTS.tips}", not to sales, because they are owed to staff. Point that at your tips or payroll liability account in the options.`);
+  if (rows.some((r) => r.giftCardSales)) warnings.push(`Gift cards you sold are booked to "${(options.accounts && options.accounts.giftCards) || DEFAULT_ACCOUNTS.giftCards}", not to sales: the money is owed to the card holder until the card is spent. When a card is redeemed, move that amount from the gift card account to sales.`);
   warnings.push('Every account name in this file must already exist in your QuickBooks chart of accounts (use "Parent:Sub" for subaccounts). Change the account names in the options to match yours before downloading.');
   const res = { filename: `${slug(options.filenameBase || options.sourceId || 'payouts')}-journal-${groupBy}-${rows[0].date}-to-${rows[rows.length - 1].date}.csv`, mime: 'text/csv', content, warnings };
   if (flat.length > QBO_JOURNAL_MAX_LINES) {

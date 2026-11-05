@@ -86,6 +86,8 @@ export function makeTxn(f) {
   if (f.netCents !== undefined && f.netCents !== null) t.net = fromCents(f.netCents);
   else if (t.gross !== undefined || t.fee !== undefined) t.net = t.amount;
   if (f.taxCents) t.tax = fromCents(f.taxCents);
+  if (f.tipsCents) t.tips = fromCents(f.tipsCents);
+  if (f.giftCardSalesCents) t.giftCardSales = fromCents(f.giftCardSalesCents);
   if (f.id) t.id = String(f.id);
   t.type = f.type || 'other';
   if (f.counterparty) t.counterparty = f.counterparty;

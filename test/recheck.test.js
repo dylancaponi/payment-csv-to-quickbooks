@@ -1,4 +1,5 @@
-// Regression tests from the second review pass.
+// Regression tests for the second review pass ("Re-check" in
+// Names follow the review ids.
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { parse, write, convert, summarizePayouts, EngineError } from '../index.js';

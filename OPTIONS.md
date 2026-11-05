@@ -131,3 +131,14 @@ The data shapes and option names are unchanged. There are two new error codes, a
 ## Fourth check residuals (2026-11-04)
 
 No API change. There is a new warning per row whenever an amount has more than two decimals and was rounded. The text names the row's date and description, the original value and the value used. Funding labels containing the word "card" or a common card product name (Quicksilver, Venture, Savor, Sapphire, Freedom, Double Cash, Custom Cash) now count as card evidence. Bank words still win.
+
+## New sources (2026-11-05, not yet independently reviewed)
+
+New source ids: `square`, `shopify-transactions`, `shopify-payouts`, `wise`. Same `parse()` result and Txn shape; no new options. `options.currency` is used only when the file has no currency of its own (Square `$` files, Shopify files without a Currency column); data always wins. Journal vendor labels: Square, Shopify, Wise. Square and Shopify transactions carry `payoutId` / `payoutDate` (Deposit ID / Payout ID or payout date), so `groupBy: 'payout'` works; Shopify payouts files carry a `payout` row per payout; Wise has no payout ids (journal by month). None of the new sources is in the row-unique-id de-duplication set: their ids repeat (Wise main and fee rows) or are absent (Shopify), and identical rows can be real money.
+
+## Review round 1 fixes for the new sources (2026-11-05)
+- Txn: optional `tips` and `giftCardSales` (major units, part of a sale's gross). `summarizePayouts` rows: new `tipsCollected` and `giftCardSales`, carved out of `grossSales`; `netActivity` includes them.
+- Journal: new account keys `tips` (default `Tips owed to staff`) and `giftCards` (default `Gift card liability`); lines only appear when non-zero, so other sources' output is unchanged.
+- `write('qbo-journal', ...)` throws `NOT_SUPPORTED` for Wise transactions (sourceId `wise`, or a TransferWise ID / Wise ID column in `raw`).
+- `detectSource` returns `sourceId: null` with a plain "wrong export" reason for Square item sales and Shopify orders/products exports; `parse('generic-bank', ...)` throws WRONG_SOURCE for them.
+- Shopify payouts: failed payouts' activity is kept without a payout id; Retried Amount is no longer a transaction.

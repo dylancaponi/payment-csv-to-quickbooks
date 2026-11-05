@@ -8,7 +8,7 @@ import { lastDayOfMonth } from './dates.js';
 
 export const NO_PAYOUT_KEY = '(not yet paid out)';
 
-const BUCKETS = ['sales', 'refunds', 'fees', 'taxes', 'adjustments', 'paymentsSent', 'transfersOut', 'transfersIn', 'fundingOut', 'fundingIn', 'payouts'];
+const BUCKETS = ['sales', 'tips', 'giftCards', 'refunds', 'fees', 'taxes', 'adjustments', 'paymentsSent', 'transfersOut', 'transfersIn', 'fundingOut', 'fundingIn', 'payouts'];
 
 // Split one Txn into signed cent components (platform balance view; the sum
 // of components equals amount).
@@ -55,6 +55,17 @@ export function components(t) {
   if (bucket) {
     if (hasSplit) { out[bucket] = gross; out.fees = -fee - tax; }
     else out[bucket] = rest;
+    // Tips and gift card sales collected with a sale (Square) are not sales
+    // revenue: they get their own buckets, carved out of the sale.
+    // A refund of such a sale (negative tips / gift card sales) is split the
+    // same way, so the tip comes back out of the tips account, not sales.
+    const tips = toCents(t.tips) || 0;
+    const gc = toCents(t.giftCardSales) || 0;
+    if (bucket === 'sales') {
+      if ((tips || gc) && tips >= 0 && gc >= 0 && tips + gc <= out.sales) { out.sales -= tips + gc; out.tips = tips; out.giftCards = gc; }
+    } else if (bucket === 'refunds') {
+      if ((tips || gc) && tips <= 0 && gc <= 0 && tips + gc >= out.refunds) { out.refunds -= tips + gc; out.tips = tips; out.giftCards = gc; }
+    }
   } else if (t.type === 'fee') {
     out.fees = rest;
   } else {
@@ -108,7 +119,7 @@ export function summarizePayouts(transactions, options = {}) {
       if (t.type === 'payout') { payoutRows++; if (!payoutDate || t.date > payoutDate) payoutDate = t.date; }
       if (t.payoutDate && (!declared || t.payoutDate > declared)) declared = t.payoutDate;
     }
-    const net = sum.sales + sum.refunds + sum.fees + sum.taxes + sum.adjustments + sum.paymentsSent;
+    const net = sum.sales + sum.tips + sum.giftCards + sum.refunds + sum.fees + sum.taxes + sum.adjustments + sum.paymentsSent;
     const outToBank = -sum.transfersOut;
     const inFromBank = sum.transfersIn;
     const outToCard = -sum.fundingOut;
@@ -129,7 +140,7 @@ export function summarizePayouts(transactions, options = {}) {
     else date = (g.key !== NO_PAYOUT_KEY && declared) || payoutDate || to;
     rows.push({
       key: g.key, groupBy, date, currency: g.currency, transactionCount: g.txns.filter((t) => t.type !== 'payout').length,
-      grossSales: fromCents(sum.sales), refunds: fromCents(sum.refunds), fees: fromCents(sum.fees), taxes: fromCents(sum.taxes),
+      grossSales: fromCents(sum.sales), tipsCollected: fromCents(sum.tips), giftCardSales: fromCents(sum.giftCards), refunds: fromCents(sum.refunds), fees: fromCents(sum.fees), taxes: fromCents(sum.taxes),
       adjustments: fromCents(sum.adjustments), paymentsSent: fromCents(sum.paymentsSent), netActivity: fromCents(net),
       transfersToBank: fromCents(outToBank), transfersFromBank: fromCents(inFromBank),
       fundingToCard: fromCents(outToCard), fundingFromCard: fromCents(inFromCard), payoutAmount: fromCents(payout), hasPayoutRow: payoutRows > 0,

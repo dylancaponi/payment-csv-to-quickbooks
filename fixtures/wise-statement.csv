@@ -1,0 +1,8 @@
+﻿"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Card Last Four Digits","Card Holder Full Name",Attachment,Note,"Total fees"
+TRANSFER-102,20-08-2024,0.00,USD,Received money from Test Payer,,1996.17,,,,Test Payer,,,,,,,,0.00
+BALANCE-300,15-08-2024,-100.00,USD,Converted 100.00 USD to 92.00 EUR,,1996.17,USD,EUR,0.92000,,,,,,,,,0.00
+CARD-201,12-08-2024,10.00,USD,"Card transaction of 10.00 USD refunded by Coffee, Inc",,2096.17,,,,,,,"Coffee, Inc",4321,Sam Placeholder,,,0.00
+CARD-200,10-08-2024,-45.10,USD,"Card transaction of 45.10 USD issued by Coffee, Inc",,2086.17,,,,,,,"Coffee, Inc",4321,Sam Placeholder,,,0.00
+TRANSFER-101,05-08-2024,-11.35,USD,Wise Charges for: TRANSFER-101,,2131.27,,,,,Wise,,,,,,,0.00
+TRANSFER-101,05-08-2024,-357.38,USD,Sent money to John Doe,Rent,2142.62,,,,,John Doe,LT21 1111 2222 3333 4444,,,,,,11.35
+TRANSFER-100,01-08-2024,1500.00,USD,Received money from Acme Ltd,Invoice 42,2500.00,,,,Acme Ltd,,,,,,,,0.00

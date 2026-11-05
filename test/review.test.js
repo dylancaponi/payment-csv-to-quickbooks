@@ -1,4 +1,5 @@
-// Regression tests from an independent review of the engine.
+// Regression tests for the independent review
+// Each test is built from the review repro. Bug numbers follow the review.
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { parse, write, detectSource, convert, summarizePayouts, EngineError } from '../index.js';

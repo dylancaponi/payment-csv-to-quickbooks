@@ -1,4 +1,5 @@
-// Regression tests from the third review pass.
+// Regression tests for the third review pass ("Third check" in
+//
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { parse, write, EngineError } from '../index.js';
