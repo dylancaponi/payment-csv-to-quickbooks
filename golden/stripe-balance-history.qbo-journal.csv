@@ -1,0 +1,11 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20250624-1,06/24/2025,Sales of Product Income,,57.50,Gross sales - Stripe payout po_9Z0TestPayout0001,
+BI-20250624-1,06/24/2025,Bank Charges & Fees,2.14,,Fees - Stripe payout po_9Z0TestPayout0001,
+BI-20250624-1,06/24/2025,Checking,55.36,,Deposit - Stripe payout po_9Z0TestPayout0001,
+BI-20250630-1,06/30/2025,Sales of Product Income,,12.00,Gross sales - Stripe activity not yet paid out,
+BI-20250630-1,06/30/2025,Bank Charges & Fees,0.65,,Fees - Stripe activity not yet paid out,
+BI-20250630-1,06/30/2025,Uncategorized Asset,11.35,,Kept in Stripe balance - Stripe activity not yet paid out,
+BI-20250702-1,07/02/2025,Sales of Product Income,,1601.79,Gross sales - Stripe payout po_9Z0TestPayout0002,
+BI-20250702-1,07/02/2025,Sales of Product Income,50.00,,Refunds - Stripe payout po_9Z0TestPayout0002,
+BI-20250702-1,07/02/2025,Bank Charges & Fees,62.66,,Fees - Stripe payout po_9Z0TestPayout0002,
+BI-20250702-1,07/02/2025,Checking,1489.13,,Deposit - Stripe payout po_9Z0TestPayout0002,

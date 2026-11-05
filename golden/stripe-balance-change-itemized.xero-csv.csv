@@ -1,0 +1,6 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+01/23/2025,11.35,,Charge,txn_8Y1TestAAAA00001,
+01/23/2025,-0.77,,Refund - REFUND FOR PAYMENT,txn_8Y1TestAAAA00002,
+01/24/2025,2427.20,,"Charge - Invoice INV-0007, annual plan",txn_8Y1TestAAAA00003,
+01/25/2025,-0.50,,Stripe fee - Card payments (2025-01-24): Transaction network costs,txn_8Y1TestAAAA00004,
+01/26/2025,15.00,,Dispute won,txn_8Y1TestAAAA00005,

@@ -1,0 +1,9 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20251017-1,10/17/2025,Sales of Product Income,,3212.48,Gross sales - Airbnb payout G-TESTPAYOUT1,
+BI-20251017-1,10/17/2025,Sales of Product Income,649.00,,Refunds - Airbnb payout G-TESTPAYOUT1,
+BI-20251017-1,10/17/2025,Bank Charges & Fees,76.90,,Fees - Airbnb payout G-TESTPAYOUT1,
+BI-20251017-1,10/17/2025,Uncategorized Income,,95.00,Adjustments - Airbnb payout G-TESTPAYOUT1,
+BI-20251017-1,10/17/2025,Checking,2581.58,,Deposit - Airbnb payout G-TESTPAYOUT1,
+BI-20251205-1,12/05/2025,Sales of Product Income,,196.86,Gross sales - Airbnb payout G-TESTPAYOUT2,
+BI-20251205-1,12/05/2025,Bank Charges & Fees,5.91,,Fees - Airbnb payout G-TESTPAYOUT2,
+BI-20251205-1,12/05/2025,Checking,190.95,,Deposit - Airbnb payout G-TESTPAYOUT2,

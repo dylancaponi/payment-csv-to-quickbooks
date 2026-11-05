@@ -1,0 +1,6 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+03/02/2026,15.75,Jesse Example,Sale - Notion Budget Template - Jesse Example,aaTestSale0001==:sale,
+03/05/2026,7.40,Morgan Example,"Sale - Icon Pack, Vol. 2 - Morgan Example",aaTestSale0003==:sale,
+03/05/2026,-7.40,Morgan Example,"Refund - Icon Pack, Vol. 2 - Morgan Example",aaTestSale0003==:refund,
+03/06/2026,107.70,Dana Fictional,Sale - Course: Bookkeeping Basics - Dana Fictional,aaTestSale0004==:sale,
+03/06/2026,-20.00,Dana Fictional,Partial refund - Course: Bookkeeping Basics - Dana Fictional,aaTestSale0004==:partial-refund,

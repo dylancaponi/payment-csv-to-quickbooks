@@ -1,0 +1,6 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+03/02/2026,15.75,Jesse Example,Sale - Notion Budget Template - Jesse Example,uzP3TestPurchase001==:sale,
+03/03/2026,7.40,buyer2@example.com,"Sale - Icon Pack, Vol. 2 - buyer2@example.com",uzP3TestPurchase002==:sale,
+03/05/2026,15.75,Morgan Example,Sale - Notion Budget Template - Morgan Example,uzP3TestPurchase003==:sale,
+03/08/2026,-15.75,Morgan Example,Full Refund - Notion Budget Template - Morgan Example,uzP3TestPurchase003==:full-refund,
+03/10/2026,-0.50,,Payout Fee,,

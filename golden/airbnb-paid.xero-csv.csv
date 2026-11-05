@@ -1,0 +1,7 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+10/11/2025,3116.11,Sam Notreal,Reservation - HMTEST0004 - Sam Notreal - Cozy getaway - 10/10/25-11/10/25,,
+10/11/2025,95.00,Jo Mockguest,Resolution Payout - HMTEST0003 - Jo Mockguest - Lovely 2-bedroom - 9/17/25-9/27/25,,
+10/11/2025,-629.53,Kim Testperson,Adjustment - HMTEST0002 - Kim Testperson - New studio - 9/24/25-10/8/25,,
+10/11/2025,-2581.58,,"Airbnb payout - Transfer to Pat Example, Checking 0000 (USD)",payout-G-TESTPAYOUT1,
+11/30/2025,190.95,Lee Fakeguest,"Reservation - HMTEST0001 - Lee Fakeguest - 2-bedroom, garden view - 11/2/25-12/7/25",,
+11/30/2025,-190.95,,"Airbnb payout - Transfer to Pat Example, Checking 0000 (USD)",payout-G-TESTPAYOUT2,

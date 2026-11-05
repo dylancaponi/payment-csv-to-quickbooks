@@ -1,0 +1,6 @@
+Date,Description,Credit,Debit
+01/23/2025,Charge,11.35,
+01/23/2025,Refund - REFUND FOR PAYMENT,,0.77
+01/24/2025,"Charge - Invoice INV-0007, annual plan",2427.20,
+01/25/2025,Stripe fee - Card payments (2025-01-24): Transaction network costs,,0.50
+01/26/2025,Dispute won,15.00,

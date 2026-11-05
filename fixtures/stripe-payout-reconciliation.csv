@@ -1,0 +1,7 @@
+"automatic_payout_id","automatic_payout_effective_at","balance_transaction_id","created","available_on","currency","gross","fee","net","reporting_category","description"
+"po_7X2TestPayoutA0001","2025-02-04 00:00:00","txn_7X2TestBBBB00001","2025-01-30 16:31:18","2025-02-04 00:00:00","usd","102.00","3.26","98.74","charge","Gift card"
+"po_7X2TestPayoutA0001","2025-02-04 00:00:00","txn_7X2TestBBBB00002","2025-01-31 10:05:00","2025-02-04 00:00:00","usd","49.99","1.75","48.24","charge","Monthly plan, January"
+"po_7X2TestPayoutA0001","2025-02-04 00:00:00","txn_7X2TestBBBB00003","2025-01-31 12:00:00","2025-01-31 12:00:00","usd","-10.00","0.00","-10.00","refund","Partial refund"
+"po_7X2TestPayoutA0001","2025-02-04 00:00:00","txn_7X2TestBBBB00004","2025-02-01 00:00:00","2025-02-01 00:00:00","usd","-0.50","0.00","-0.50","fee","Radar (2025-01-31): Standard"
+"po_7X2TestPayoutB0002","2025-02-06 00:00:00","txn_7X2TestBBBB00005","2025-02-02 08:00:00","2025-02-06 00:00:00","usd","300.00","9.00","291.00","charge","Order 2001"
+"po_7X2TestPayoutB0002","2025-02-06 00:00:00","txn_7X2TestBBBB00006","2025-02-03 09:00:00","2025-02-03 09:00:00","usd","-30.00","15.00","-45.00","dispute","Dispute"

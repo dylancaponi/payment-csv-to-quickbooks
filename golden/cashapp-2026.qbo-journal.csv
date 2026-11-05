@@ -1,0 +1,9 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20260131-1,01/31/2026,Sales of Product Income,,1250.00,Gross sales - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Uncategorized Income,,4.80,Adjustments - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Payments sent (uncategorized expense),5.00,,Payments sent - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Checking,150.00,,Transfer from Cash App to bank - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Uncategorized Asset,,150.00,Transfer from Cash App to bank - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Uncategorized Asset,200.00,,Funded by card or other source into Cash App - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Credit card or other funding source,,200.00,Funded by card or other source into Cash App - Cash App activity 2026-01,
+BI-20260131-1,01/31/2026,Uncategorized Asset,1249.80,,Kept in Cash App balance - Cash App activity 2026-01,

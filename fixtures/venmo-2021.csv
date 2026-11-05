@@ -1,0 +1,16 @@
+Account Statement - (@Sam-Fixture) - July 31st to September 1st 2021 ,,,,,,,,,,,,,,,,,,
+Account Activity,,,,,,,,,,,,,,,,,,
+,ID,Datetime,Type,Status,Note,From,To,Amount (total),Amount (tip),Amount (fee),Funding Source,Destination,Beginning Balance,Ending Balance,Statement Period Venmo Fees,Terminal Location,Year to Date Venmo Fees,Disclaimer
+,,,,,,,,,,,,,$101.04,,,,,
+,3301234567890123456,2021-08-03T19:22:01,Charge,Complete,Groceries split,Sam Fixture,Alex Mock,+ $39.02,,,,Venmo balance,,,,Venmo,,
+,100001863680,2021-08-15T10:00:00,Credit Card Payment,Complete,,,,- $250.00,,,FAKE BANK Personal Checking *1111,,,,,Venmo,,
+,3301234567890123457,2021-08-20T13:45:10,Payment,Pending,Lunch,Sam Fixture,Alex Mock,- $12.50,,,Venmo balance,,,,,Venmo,,
+,,,,,,,,,,,,,,$140.06,$0.00,,$0.00,"In case of errors or questions about your
+        electronic transfers:
+        Synthetic disclaimer text for tests.
+        "
+,,,,,,,,,,,,,,,,,,
+Cryptocurrency summary,,,,,,,,,,,,,,,,,,
+,,Ethereum,,,,,,,,,,,,,,,,
+Available beginning,,0.00000000,,,,,,,,,,,,,,,,
+Available ending,,0.00000000,,,,,,,,,,,,,,,,

@@ -1,0 +1,7 @@
+Date,Arriving by date,Type,Confirmation code,Booking date,Start date,End date,Nights,Guest,Listing,Details,Reference code,Currency,Amount,Paid out,Service fee,Fast Pay Fee,Cleaning fee,Gross earnings,Occupancy taxes,Earnings year
+11/30/25,12/5/25,Payout,,,,,,,,"Transfer to Pat Example, Checking 0000 (USD)",G-TESTPAYOUT2,USD,,190.95,,,,,,
+11/30/25,,Reservation,HMTEST0001,10/29/25,11/2/25,12/7/25,35,Lee Fakeguest,"2-bedroom, garden view",,,USD,190.95,,5.91,,0,196.86,19.05,2025
+10/11/25,10/17/25,Payout,,,,,,,,"Transfer to Pat Example, Checking 0000 (USD)",G-TESTPAYOUT1,USD,,2581.58,,,,,,
+10/11/25,,Adjustment,HMTEST0002,8/29/25,9/24/25,10/8/25,14,Kim Testperson,New studio,,,USD,-629.53,,-19.47,,-32.14,,-104.29,2025
+10/11/25,,Resolution Payout,HMTEST0003,,9/17/25,9/27/25,10,Jo Mockguest,Lovely 2-bedroom,,,USD,95,,,,,95,,2025
+10/11/25,,Reservation,HMTEST0004,9/29/25,10/10/25,11/10/25,31,Sam Notreal,Cozy getaway,,,USD,3116.11,,96.37,,110,3212.48,310.94,2025

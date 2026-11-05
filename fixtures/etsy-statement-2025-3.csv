@@ -1,0 +1,12 @@
+﻿Date,Type,Title,Info,Currency,Amount,"Fees & Taxes",Net,"Tax Details"
+"March 31, 2025",Deposit,"$1,208.35 sent to your bank account",,USD,--,--,--,--
+"March 28, 2025",Marketing,"Etsy Ads","Bill for click-throughs to your shop on Mar 27, 2025",USD,--,-$0.86,-$0.86,--
+"March 20, 2025",Refund,"Refund to buyer for Order #3600000002",,USD,-$17.37,--,-$17.37,--
+"March 20, 2025",Fee,"Credit for processing fee","Order #3600000002",USD,--,$0.89,$0.89,--
+"March 20, 2025",Tax,"Refund to buyer for sales tax","Order #3600000002",USD,--,$1.30,$1.30,--
+"March 9, 2025",Fee,"Listing fee ($0.20 USD)","Listing #1500000001",USD,--,-$0.20,-$0.20,--
+"March 8, 2025",Fee,"Transaction fee: Shipping","Order #3600000001",USD,--,-$0.31,-$0.31,--
+"March 8, 2025",Fee,"Transaction fee: Hand-thrown mug, ""speckled"" glaze...","Order #3600000001",USD,--,-$2.73,-$2.73,--
+"March 8, 2025",Tax,"Sales tax paid by buyer","Order #3600000001",USD,--,-$3.36,-$3.36,--
+"March 8, 2025",Fee,"Processing fee","Order #3600000001",USD,--,-$1.62,-$1.62,--
+"March 8, 2025",Sale,"Payment for Order #3600000001",,USD,"$1,250.00",--,"$1,250.00",--

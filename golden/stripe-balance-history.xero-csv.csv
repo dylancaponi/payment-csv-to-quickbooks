@@ -1,0 +1,11 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+06/20/2025,23.97,,Charge - Order 1041,txn_9Z0TestCharge0001,
+06/20/2025,31.39,,Charge - Order 1042,txn_9Z0TestCharge0002,
+06/22/2025,-55.36,,Payout - STRIPE PAYOUT,txn_9Z0TestPayout0001,
+06/24/2025,970.70,,"Charge - Order 1044, 2 seats",txn_9Z0TestCharge0004,
+06/24/2025,583.51,,Charge - Order 1045,txn_9Z0TestCharge0005,
+06/25/2025,-20.00,,Refund - REFUND FOR CHARGE (Order 1043),txn_9Z0TestRefund0001,
+06/26/2025,-45.00,,Dispute - Chargeback withdrawal for ch_9Z0TestCharge0003,txn_9Z0TestDispute001,
+06/27/2025,-0.08,,Stripe fee - Radar (2025-06-26): Radar for Fraud Teams,txn_9Z0TestRadar00001,
+06/30/2025,-1489.13,,Payout - STRIPE PAYOUT,txn_9Z0TestPayout0002,
+06/30/2025,11.35,,Charge - Order 1046,txn_9Z0TestCharge0006,

@@ -1,0 +1,6 @@
+"Transaction ID","Date","Transaction Type","Currency","Amount","Fee","Net Amount","Asset Type","Asset Price","Asset Amount","Status","Notes","Name of sender/receiver","Account"
+"ux2t7w","2024-08-07 15:12:44 EDT","Received P2P","USD","$2","$0","$2",,"",,"PAYMENT DEPOSITED",,"Drew Synthetic","Your Cash"
+"ab3k9q","2024-08-05 10:01:02 EDT","Cash Card Debit","USD","-$28","$0","-$28",,"",,"CARD CHARGED","SAMPLE MART 0001",,"Visa Debit 7950"
+"cd4m0r","2024-08-03 18:30:00 EDT","Sent P2P","USD","$45","$0","$45",,"",,"PAYMENT REVERSED","Concert, row 5","Robin Notreal","Your Cash"
+"ef5n1s","2024-08-01 09:00:00 EDT","Sent P2P","USD","-$45","$0","-$45",,"",,"PAYMENT SENT","Concert, row 5","Robin Notreal","Your Cash"
+"gh6p2t","2024-07-30 07:45:00 EDT","Direct Deposit","USD","$1,149","$0","$1,149",,"",,"CARD CHARGED","PAYROLL SAMPLE CO",,"Your Cash"

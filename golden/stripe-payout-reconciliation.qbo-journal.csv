@@ -1,0 +1,9 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20250204-1,02/04/2025,Sales of Product Income,,151.99,Gross sales - Stripe payout po_7X2TestPayoutA0001,
+BI-20250204-1,02/04/2025,Sales of Product Income,10.00,,Refunds - Stripe payout po_7X2TestPayoutA0001,
+BI-20250204-1,02/04/2025,Bank Charges & Fees,5.51,,Fees - Stripe payout po_7X2TestPayoutA0001,
+BI-20250204-1,02/04/2025,Checking,136.48,,Deposit - Stripe payout po_7X2TestPayoutA0001,
+BI-20250206-1,02/06/2025,Sales of Product Income,,300.00,Gross sales - Stripe payout po_7X2TestPayoutB0002,
+BI-20250206-1,02/06/2025,Sales of Product Income,30.00,,Refunds - Stripe payout po_7X2TestPayoutB0002,
+BI-20250206-1,02/06/2025,Bank Charges & Fees,24.00,,Fees - Stripe payout po_7X2TestPayoutB0002,
+BI-20250206-1,02/06/2025,Checking,246.00,,Deposit - Stripe payout po_7X2TestPayoutB0002,

@@ -1,0 +1,17 @@
+Account Statement - (@Pat-Example) ,,,,,,,,,,,,,,,,,,,,,
+Account Activity,,,,,,,,,,,,,,,,,,,,,
+,ID,Datetime,Type,Status,Note,From,To,Amount (total),Amount (tip),Amount (tax),Amount (fee),Tax Rate,Tax Exempt,Funding Source,Destination,Beginning Balance,Ending Balance,Statement Period Venmo Fees,Terminal Location,Year to Date Venmo Fees,Disclaimer
+,,,,,,,,,,,,,,,,$120.00,,,,,
+,4012345678901234567,2025-03-02T18:04:11,Payment,Complete,Pizza night 🍕,Riley Sample,Pat Example,+ $25.00,,0,,0,,,Venmo balance,,,,Venmo,,
+,4012345678901234570,2025-03-03T12:00:00,Payment,Complete,Logo design & brand kit,Morgan Test,Pat Example,"+ $1,961.90",,0,$38.10,0,,,Venmo balance,,,,Venmo,,
+,4012345678901234568,2025-03-05T09:15:00,Payment,Complete,"Rent share
+March",Pat Example,Jordan Placeholder,"- $1,000.00",,0,,0,,Venmo balance,,,,,Venmo,,
+,4012345678901234569,2025-03-07T22:40:00,Payment,Complete,Concert tickets,Pat Example,Casey Demo,- $80.00,,0,,0,,FAKE BANK Personal Checking *0000,,,,,Venmo,,
+,4012345678901234571,2025-03-12T08:00:00,Standard Transfer,Issued,,,,- $500.00,,,,,,,FAKE BANK *0000,,,,Venmo,,
+,4012345678901234572,2025-03-14T16:20:05,Payment,Complete,Coffee,Riley Sample,Pat Example,+ $15.00,,0,,0,,,Venmo balance,,,,Venmo,,
+,4012345678901234573,2025-03-14T16:21:40,Payment,Complete,Coffee,Riley Sample,Pat Example,+ $15.00,,0,,0,,,Venmo balance,,,,Venmo,,
+,,,,,,,,,,,,,,,,,$636.90,$38.10,,$38.10,"In case of errors or questions about your
+        electronic transfers:
+        This is a synthetic test disclaimer, written for the fixture only.
+        It spans several lines, like the real one does.
+        "

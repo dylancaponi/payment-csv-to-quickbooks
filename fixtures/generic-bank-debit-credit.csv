@@ -1,0 +1,11 @@
+Account Name:,Sample Business Checking
+Account Number:,XXXX0000
+Statement Period:,01/03/2025 - 31/03/2025
+
+Date,Description,Debit,Credit,Balance
+03/03/2025,OPENING DEPOSIT,,"2,500.00","2,500.00"
+14/03/2025,"OFFICE SUPPLIES, INV 77",125.40,,"2,374.60"
+15/03/2025,CLIENT PAYMENT - ACME SAMPLE LLC,,800.00,"3,174.60"
+28/03/2025,MONTHLY SERVICE FEE,5.00,,"3,169.60"
+28/03/2025,12345,10.00,,"3,159.60"
+Closing balance,,,,"3,159.60"

@@ -1,0 +1,11 @@
+id,Type,Source,Amount,Fee,Destination Platform Fee,Destination Platform Fee Currency,Net,Currency,Created (UTC),Available On (UTC),Description,Customer Facing Amount,Customer Facing Currency,Transfer,Transfer Date (UTC),Transfer Group
+txn_9Z0TestPayout0002,payout,po_9Z0TestPayout0002,-1489.13,0.00,,,-1489.13,usd,2025-06-30 01:12,2025-07-02 00:00,STRIPE PAYOUT,,,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestRadar00001,stripe_fee,,-0.08,0.00,,,-0.08,usd,2025-06-27 09:01,2025-06-27 09:01,Radar (2025-06-26): Radar for Fraud Teams,,,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestDispute001,adjustment,du_9Z0TestDispute001,-30.00,15.00,,,-45.00,usd,2025-06-26 14:00,2025-06-26 14:00,Chargeback withdrawal for ch_9Z0TestCharge0003,,,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestRefund0001,refund,re_9Z0TestRefund0001,-20.00,0.00,,,-20.00,usd,2025-06-25 18:30,2025-06-25 18:30,REFUND FOR CHARGE (Order 1043),,,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestCharge0004,charge,ch_9Z0TestCharge0004,1000.00,29.30,,,970.70,usd,2025-06-24 11:00,2025-06-27 00:00,"Order 1044, 2 seats",,,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestCharge0005,charge,ch_9Z0TestCharge0005,601.79,18.28,,,583.51,usd,2025-06-24 11:05,2025-06-27 00:00,Order 1045,550.00,eur,po_9Z0TestPayout0002,2025-07-02 00:00,
+txn_9Z0TestPayout0001,payout,po_9Z0TestPayout0001,-55.36,0.00,,,-55.36,usd,2025-06-22 01:10,2025-06-24 00:00,STRIPE PAYOUT,,,po_9Z0TestPayout0001,2025-06-24 00:00,
+txn_9Z0TestCharge0001,charge,ch_9Z0TestCharge0001,25.00,1.03,,,23.97,usd,2025-06-20 15:39,2025-06-23 00:00,Order 1041,,,po_9Z0TestPayout0001,2025-06-24 00:00,
+txn_9Z0TestCharge0002,charge,ch_9Z0TestCharge0002,32.50,1.11,,,31.39,usd,2025-06-20 16:02,2025-06-23 00:00,Order 1042,,,po_9Z0TestPayout0001,2025-06-24 00:00,
+txn_9Z0TestCharge0006,charge,ch_9Z0TestCharge0006,12.00,0.65,,,11.35,usd,2025-06-30 22:21,2025-07-03 00:00,Order 1046,,,,,

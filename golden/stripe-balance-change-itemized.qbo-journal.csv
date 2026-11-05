@@ -1,0 +1,5 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20250131-1,01/31/2025,Sales of Product Income,,2512.00,Gross sales - Stripe activity 2025-01,
+BI-20250131-1,01/31/2025,Sales of Product Income,,14.23,Refunds - Stripe activity 2025-01,
+BI-20250131-1,01/31/2025,Bank Charges & Fees,73.95,,Fees - Stripe activity 2025-01,
+BI-20250131-1,01/31/2025,Uncategorized Asset,2452.28,,Kept in Stripe balance - Stripe activity 2025-01,

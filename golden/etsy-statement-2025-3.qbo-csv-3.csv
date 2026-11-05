@@ -1,0 +1,12 @@
+Date,Description,Amount
+03/08/2025,Payment for Order #3600000001,1250.00
+03/08/2025,Processing fee (Order #3600000001),-1.62
+03/08/2025,Sales tax paid by buyer (Order #3600000001),-3.36
+03/08/2025,"Transaction fee: Hand-thrown mug, ""speckled"" glaze... (Order #3600000001)",-2.73
+03/08/2025,Transaction fee: Shipping (Order #3600000001),-0.31
+03/09/2025,Listing fee ( 0.20 USD) (Listing #1500000001),-0.20
+03/20/2025,Refund to buyer for sales tax (Order #3600000002),1.30
+03/20/2025,Credit for processing fee (Order #3600000002),0.89
+03/20/2025,Refund to buyer for Order #3600000002,-17.37
+03/28/2025,"Etsy Ads (Bill for click-throughs to your shop on Mar 27, 2025)",-0.86
+03/31/2025,"1,208.35 sent to your bank account",-1208.35

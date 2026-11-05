@@ -1,0 +1,39 @@
+{
+  "name": "payment-csv-to-quickbooks",
+  "version": "0.1.0",
+  "description": "In-browser converter: payment app and marketplace CSV exports to QuickBooks, Quicken and Xero import files.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "homepage": "https://booksready.dylan-caponi.workers.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dylancaponi/payment-csv-to-quickbooks.git"
+  },
+  "keywords": [
+    "quickbooks",
+    "qbo",
+    "qfx",
+    "ofx",
+    "xero",
+    "venmo",
+    "cash-app",
+    "paypal",
+    "stripe",
+    "etsy",
+    "airbnb",
+    "gumroad",
+    "csv",
+    "bank-statement",
+    "converter"
+  ]
+}

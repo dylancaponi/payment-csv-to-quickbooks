@@ -1,0 +1,6 @@
+"balance_transaction_id","created_utc","available_on_utc","currency","gross","fee","net","reporting_category","description"
+"txn_8Y1TestAAAA00001","2025-01-23 08:26:29","2025-01-27 00:00:00","usd","12.00","0.65","11.35","charge",
+"txn_8Y1TestAAAA00002","2025-01-23 08:26:31","2025-01-27 00:00:00","usd","-0.77","0.00","-0.77","refund","REFUND FOR PAYMENT"
+"txn_8Y1TestAAAA00003","2025-01-24 10:00:00","2025-01-28 00:00:00","usd","2500.00","72.80","2427.20","charge","Invoice INV-0007, annual plan"
+"txn_8Y1TestAAAA00004","2025-01-25 00:00:00","2025-01-25 00:00:00","usd","-0.50","0.00","-0.50","fee","Card payments (2025-01-24): Transaction network costs"
+"txn_8Y1TestAAAA00005","2025-01-26 09:00:00","2025-01-26 09:00:00","usd","15.00","0.00","15.00","dispute_reversal","Dispute won"

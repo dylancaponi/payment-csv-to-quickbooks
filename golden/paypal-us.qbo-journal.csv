@@ -1,0 +1,8 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20250331-1,03/31/2025,Sales of Product Income,,1300.00,Gross sales - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Sales of Product Income,50.00,,Refunds - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Bank Charges & Fees,47.77,,Fees - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Payments sent (uncategorized expense),21.84,,Payments sent - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Checking,1000.00,,Transfer from PayPal to bank - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Uncategorized Asset,,1000.00,Transfer from PayPal to bank - PayPal activity 2025-03,
+BI-20250331-1,03/31/2025,Uncategorized Asset,1180.39,,Kept in PayPal balance - PayPal activity 2025-03,
