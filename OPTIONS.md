@@ -142,3 +142,28 @@ New source ids: `square`, `shopify-transactions`, `shopify-payouts`, `wise`. Sam
 - `write('qbo-journal', ...)` throws `NOT_SUPPORTED` for Wise transactions (sourceId `wise`, or a TransferWise ID / Wise ID column in `raw`).
 - `detectSource` returns `sourceId: null` with a plain "wrong export" reason for Square item sales and Shopify orders/products exports; `parse('generic-bank', ...)` throws WRONG_SOURCE for them.
 - Shopify payouts: failed payouts' activity is kept without a payout id; Retried Amount is no longer a transaction.
+
+## Amazon settlement source and named journal lines (2026-11-06)
+
+All additive. Existing sources produce byte-identical output (golden files unchanged).
+
+- New source id `amazon-settlement` (Amazon Seller Central settlement report, Flat File V2, tab-separated). See FORMATS.md Appendix D.
+  - `meta`: `settlementId`, `settlementStart`, `settlementEnd`, `depositDate`, `depositTotal`, `rowsTotal`, `reconciled` (rows total equals total-amount). With several settlements in one file also `account` (chosen settlement id), `accounts` (`[{ account, currency, transactions }]`) and `accountKind: 'settlement'`.
+  - Parse option `account`: the settlement id to convert (a trailing currency, as the site sends it, is ignored). Unknown id: `BAD_OPTION` with `details.accounts`.
+  - New refusals (`BAD_FILE`): settlement without a summary row, summary row repeated, unreadable deposit-date or total-amount, bad currency, detail row in another currency. `WRONG_SOURCE` for the Amazon Date Range Transaction CSV (also refused in `detectSource`).
+- New optional Txn fields:
+  - `journalLine` (text, at most 200 characters): the journal writes this transaction's part on its own line with this description, inside its normal bucket (the bucket line keeps the rest).
+  - `journalAccount`: one of `sales, refunds, fees, taxes, clearing, adjustmentsIncome, adjustmentsExpense, advertising, fulfillmentFees, reserve`; the named line goes to that account instead of the bucket's. Other values: `BAD_TXN`.
+- `summarizePayouts` rows get `details: [{ bucket, account, label, amount }]` only when a transaction in the group has `journalLine`.
+- New journal `accounts` keys: `advertising` and `fulfillmentFees` (default: the fees account), `reserve` (default: the clearing account), `taxesPayable` (default: `accounts.taxes` if set, else "Sales Tax / VAT Payable"). `journalAccount` also accepts `taxesPayable`.
+- `write()` to any non-journal target adds a first warning for Amazon settlements (sourceId `amazon-settlement`, or transactions with `journalLine` and a `settlement-id` raw column) to import into a separate Amazon clearing account.
+- The generic "couldn't recognize" message now lists Amazon.
+
+## eBay transaction report source (2026-11-06)
+
+All additive; existing golden files unchanged.
+- New source id `ebay` (Seller Hub transaction report CSV). See FORMATS.md Appendix E. Each payout becomes named lines (Txn `journalLine`, `journalAccount`) plus the payout; payoutId = eBay Payout ID; several payouts per file, one journal entry each; currency selection as for every other source.
+- `meta`: `payouts` (`[{ payoutId, currency, rows, payout, reconciled }]`, payout null when the Payout row is missing), `payoutCount`, `notPaidOut`, `reconciled`.
+- Refusals: `WRONG_SOURCE` for the German eBay.de report and the eBay payout report (also in `detectSource`); `BAD_FILE` for a payout with two payout currencies or two Payout rows.
+- `write()` to non-journal targets adds a first warning for eBay (sourceId `ebay`, or rows built by this parser) to import into a separate eBay clearing account.
+- The generic "couldn't recognize" message now lists Amazon and eBay.

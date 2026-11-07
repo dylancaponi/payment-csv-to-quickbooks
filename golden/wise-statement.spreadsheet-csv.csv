@@ -1,0 +1,7 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2024-08-01,,1500.00,USD,Credit,Acme Ltd,,Received money from Acme Ltd - Invoice 42,TRANSFER-100,
+2024-08-05,,-357.38,USD,Debit,John Doe,,Sent money to John Doe - Rent,TRANSFER-101,
+2024-08-05,,-11.35,USD,Debit,Wise,,Wise Charges for: TRANSFER-101,TRANSFER-101,
+2024-08-10,,-45.10,USD,Debit,"Coffee, Inc",,"Card transaction of 45.10 USD issued by Coffee, Inc",CARD-200,
+2024-08-12,,10.00,USD,Credit,"Coffee, Inc",,"Card transaction of 10.00 USD refunded by Coffee, Inc",CARD-201,
+2024-08-15,,-100.00,USD,Debit,,,Converted 100.00 USD to 92.00 EUR,BALANCE-300,

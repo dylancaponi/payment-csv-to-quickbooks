@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2023-10-10,,479.75,CZK,Credit,,,Shopify charge #3050,,
+2023-10-13,,-12.00,CZK,Debit,,,Shopify adjustment,,
+2023-10-14,,-738.51,CZK,Debit,,,Shopify refund #3055,,
+2023-10-20,,959.50,CZK,Credit,,,Shopify charge #3080,,
+2023-10-31,,2529.16,CZK,Credit,,,Shopify charge #3099,,

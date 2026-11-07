@@ -1,6 +1,6 @@
 # payment-csv-to-quickbooks
 
-Convert CSV exports from Venmo, Cash App, PayPal, Stripe, Square, Shopify Payments, Wise, Etsy, Airbnb, Gumroad and any bank into files QuickBooks, Quicken and Xero accept: Web Connect (.qbo), .qfx, OFX, QuickBooks Online bank CSV, Xero bank statement CSV, and balanced QuickBooks Online journal entries per payout.
+Convert CSV exports from Venmo, Cash App, PayPal, Stripe, Square, Shopify Payments, Wise, Etsy, Airbnb, Gumroad and any bank, plus MT940 and camt.053 bank statements, into files QuickBooks, Quicken, Xero and Excel accept: Web Connect (.qbo), .qfx, OFX, QuickBooks Online bank CSV, Xero bank statement CSV, a plain spreadsheet CSV, and balanced QuickBooks Online journal entries per payout.
 
 Plain ES modules, zero dependencies, no network calls. The same code runs in the browser and in Node 20+.
 
@@ -8,7 +8,7 @@ Want to convert a file without writing code? The free hosted converter runs this
 
 https://booksready.dylan-caponi.workers.dev
 
-Sources: Venmo, Cash App, PayPal, Stripe (balance and payouts), Square, Shopify Payments (transactions and payouts), Wise (bank files only, no journal), Etsy, Airbnb, Gumroad, any bank CSV.
+Sources: Venmo, Cash App, PayPal, Stripe (balance and payouts), Square, Shopify Payments (transactions and payouts), Wise (bank files only, no journal), Etsy, Airbnb, Gumroad, Amazon settlement report (Flat File V2), eBay transaction report, any bank CSV.
 Targets: QuickBooks Web Connect (.qbo), Quicken (.qfx), OFX 1.0.2, QuickBooks Online bank CSV (3 or 4 columns), Xero bank statement CSV, QuickBooks Online journal entries (one balanced entry per payout or month).
 
 Format rules and their sources: `FORMATS.md`. Every id and option: `OPTIONS.md`.
@@ -83,7 +83,7 @@ Common parse options: `dateOrder` (`mdy`/`dmy`), `decimal` (`.`/`,`), `timeZone`
 node --test
 ```
 
-Golden files in `golden/` cover every fixture x target. After an intentional output change: `UPDATE_GOLDEN=1 node --test`, then review the diff. Fixtures in `fixtures/` are synthetic (invented names and amounts) but reproduce the real header rows and quirks; the wide ones and the byte-level quirks (BOM, CRLF) are produced by `node test-support/make-fixtures.mjs`.
+Golden files in `golden/` cover every fixture x target. After an intentional output change: `UPDATE_GOLDEN=1 node --test`, then review the diff. Fixtures in `fixtures/` are constructed (invented names and amounts) on documented or published layouts and reproduce the real header rows and quirks, with one exception: six MT940, MT942 and camt.053 files are copies of samples published by ING, a Rabobank gist and the WoLpH/mt940 test suite, used for format reference only. `NOTICES.md` lists them with their sources and license, and says which fixtures are constructed from published layouts (ABN AMRO MT940, the camt.053 pair) and which from documentation (Amazon, eBay, the CSV sources); the wide ones and the byte-level quirks (BOM, CRLF) are produced by `node test-support/make-fixtures.mjs`.
 
 ## Adding a source
 

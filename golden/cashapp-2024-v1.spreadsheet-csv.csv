@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2024-07-30,,1149.00,USD,Credit,,,PAYROLL SAMPLE CO,gh6p2t,
+2024-08-01,,-45.00,USD,Debit,Robin Notreal,,"Robin Notreal - Concert, row 5",ef5n1s,
+2024-08-03,,45.00,USD,Credit,Robin Notreal,,"Robin Notreal - Concert, row 5",cd4m0r,
+2024-08-05,,-28.00,USD,Debit,,,SAMPLE MART 0001,ab3k9q,
+2024-08-07,,2.00,USD,Credit,Drew Synthetic,,Drew Synthetic,ux2t7w,

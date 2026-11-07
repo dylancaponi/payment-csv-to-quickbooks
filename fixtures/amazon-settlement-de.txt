@@ -1,0 +1,9 @@
+settlement-id	settlement-start-date	settlement-end-date	deposit-date	total-amount	currency	transaction-type	order-id	merchant-order-id	adjustment-id	shipment-id	marketplace-name	amount-type	amount-description	amount	fulfillment-id	posted-date	posted-date-time	order-item-code	merchant-order-item-id	merchant-adjustment-item-id	sku	quantity-purchased	promotion-id
+90000000002	13.10.2025 08:59:52 UTC	27.10.2025 08:59:51 UTC	29.10.2025 08:59:51 UTC	25,95	EUR																		
+90000000002						Order	302-0000001-0000001			DSynthDE01	Amazon.de	ItemPrice	Principal	29,99	AFN	14.10.2025	14.10.2025 10:11:12 UTC	80000000000001			SKU-LAMP-DE	1	
+90000000002						Order	302-0000001-0000001			DSynthDE01	Amazon.de	ItemPrice	Tax	5,70	AFN	14.10.2025	14.10.2025 10:11:12 UTC	80000000000001			SKU-LAMP-DE	1	
+90000000002						Order	302-0000001-0000001			DSynthDE01	Amazon.de	ItemFees	Commission	-4,50	AFN	14.10.2025	14.10.2025 10:11:12 UTC	80000000000001			SKU-LAMP-DE	1	
+90000000002						Order	302-0000001-0000001			DSynthDE01	Amazon.de	ItemFees	FBAPerUnitFulfillmentFee	-3,10	AFN	14.10.2025	14.10.2025 10:11:12 UTC	80000000000001			SKU-LAMP-DE	1	
+90000000002						Order	302-0000001-0000001			DSynthDE01	Amazon.de	ItemFees	DigitalServicesFee	-0,14	AFN	14.10.2025	14.10.2025 10:11:12 UTC	80000000000001			SKU-LAMP-DE	1	
+90000000002						other-transaction						other-transaction	Previous Reserve Amount Balance	8,00		13.10.2025	13.10.2025 08:59:52 UTC						
+90000000002						other-transaction						other-transaction	Current Reserve Amount	-10,00		27.10.2025	27.10.2025 08:59:51 UTC						

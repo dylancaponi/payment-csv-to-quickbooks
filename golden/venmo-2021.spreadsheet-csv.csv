@@ -1,0 +1,4 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2021-08-03,,39.02,USD,Credit,Alex Mock,,Alex Mock - Groceries split,3301234567890123456,
+2021-08-15,,-250.00,USD,Debit,,,Credit Card Payment to FAKE BANK Personal Checking *1111,100001863680,
+2021-08-15,,250.00,USD,Credit,FAKE BANK Personal Checking *1111,,Funded by FAKE BANK Personal Checking *1111,100001863680:funding,

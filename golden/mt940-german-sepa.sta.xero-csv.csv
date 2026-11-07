@@ -1,0 +1,13 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+09/04/2007,335.33,,TFNR 44005 00001MTLG:Grund nicht spezifiziert Reject aus SEPA-Ueberweisungsauftrag,TFNr 44005 MSGID//0724710351059240,
+09/04/2007,915311.55,,TFNR 44005 00002MTLG:Konto gesperrt Rueckueberweisung aus SEPA-Ueberweisungsauftrag,TFNr 44005 MSGID//R724710351059243,
+09/04/2007,-157.34,Empfaenger 1 mit 70 Zeichen Empfaenger 1 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 001 DE,KREF+//0724710360914647,
+09/04/2007,-6002.17,Empfaenger 2 mit 70 Zeichen Empfaenger 2 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 002 DE,KREF+//0724710360912501,
+09/04/2007,-6002.17,Empfaenger 5 mit 70 Zeichen Empfaenger 5 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 005 DE,KREF+//0724710360923556,
+09/04/2007,-6002.17,Empfaenger 6 mit 70 Zeichen Empfaenger 6 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 006 DE,KREF+//0724710360910575,
+09/04/2007,-6002.17,Empfaenger 4 mit 70 Zeichen Empfaenger 4 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 004 DE,KREF+//0724710360918027,
+09/04/2007,-6002.17,Empfaenger 3 mit 70 Zeichen Empfaenger 3 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 003 DE,KREF+//0724710360916341,
+09/04/2007,-155344.11,Empfaenger 7 mit 70 Zeichen Empfaenger 7 mit 70 Zeiche,Strukturierter Verwendungszweck EBB 01041 007 DEMTLG:Ggf.Meldevorschriften beachten,KREF+//0724710360908674,
+09/04/2007,-415603.93,,MTLG:SBI-SEPA-SAMMELUEB.Anz :3 Referenz: 1930467116 Erf assung mit 003 Zahlungen,649D24F7C6EDAC53,
+09/04/2007,-589103.86,,TFNr 05003 MSGID CTSc-01 BC PPPMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000003 Zahlungen,KREF+//AC59892B266252EC,
+09/04/2007,-915646.88,,TFNr 44005 MSGID CTSc-02 EBBMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000002 Zahlungen,KREF+//CDB988231C851A5B,

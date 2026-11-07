@@ -1,0 +1,27 @@
+settlement-id	settlement-start-date	settlement-end-date	deposit-date	total-amount	currency	transaction-type	order-id	merchant-order-id	adjustment-id	shipment-id	marketplace-name	amount-type	amount-description	amount	fulfillment-id	posted-date	posted-date-time	order-item-code	merchant-order-item-id	merchant-adjustment-item-id	sku	quantity-purchased	promotion-id
+90000000001	2025-10-01 08:00:00 UTC	2025-10-15 08:00:00 UTC	2025-10-17 08:00:00 UTC	35.58	USD																		
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemPrice	Principal	39.98	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemPrice	Tax	3.30	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemPrice	Shipping	5.00	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemWithheldTax	MarketplaceFacilitatorTax-Principal	-3.30	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemFees	Commission	-6.00	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemFees	FBAPerUnitFulfillmentFee	-7.50	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	ItemFees	ShippingChargeback	-5.00	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	
+90000000001						Order	111-0000001-0000001			DSynth0001	Amazon.com	Promotion	Principal	-2.00	AFN	2025-10-03	2025-10-03 14:02:11 UTC	70000000000001			SKU-MUG-01	2	SYNTH-PROMO-2OFF
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemPrice	Principal	25.00	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemPrice	Tax	2.06	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemPrice	Shipping	4.99	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemPrice	ShippingTax	0.41	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemWithheldTax	MarketplaceFacilitatorTax-Principal	-2.06	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemWithheldTax	MarketplaceFacilitatorTax-Shipping	-0.41	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Order	111-0000002-0000002			DSynth0002	Amazon.com	ItemFees	Commission	-4.50	MFN	2025-10-06	2025-10-06 09:15:40 UTC	70000000000002			SKU-TEE-02	1	
+90000000001						Refund	111-0000003-0000003		amzn1:crow:synthetic000001		Amazon.com	ItemPrice	Principal	-19.99	AFN	2025-10-09	2025-10-09 18:30:00 UTC	70000000000003			SKU-MUG-01		
+90000000001						Refund	111-0000003-0000003		amzn1:crow:synthetic000001		Amazon.com	ItemPrice	Tax	-1.65	AFN	2025-10-09	2025-10-09 18:30:00 UTC	70000000000003			SKU-MUG-01		
+90000000001						Refund	111-0000003-0000003		amzn1:crow:synthetic000001		Amazon.com	ItemWithheldTax	MarketplaceFacilitatorTax-Principal	1.65	AFN	2025-10-09	2025-10-09 18:30:00 UTC	70000000000003			SKU-MUG-01		
+90000000001						Refund	111-0000003-0000003		amzn1:crow:synthetic000001		Amazon.com	ItemFees	Commission	3.00	AFN	2025-10-09	2025-10-09 18:30:00 UTC	70000000000003			SKU-MUG-01		
+90000000001						Refund	111-0000003-0000003		amzn1:crow:synthetic000001		Amazon.com	ItemFees	RefundCommission	-0.6	AFN	2025-10-09	2025-10-09 18:30:00 UTC	70000000000003			SKU-MUG-01		
+90000000001						ServiceFee						Cost of Advertising	TransactionTotalAmount	-12.34		2025-10-10	2025-10-10 07:00:00 UTC						
+90000000001						other-transaction						other-transaction	Storage Fee	-3.21		2025-10-08	2025-10-08 07:00:00 UTC						
+90000000001						other-transaction	5000000001					FBA Inventory Reimbursement	REVERSAL_REIMBURSEMENT	8.75		2025-10-11	2025-10-11 12:00:00 UTC				SKU-MUG-01	1	
+90000000001						other-transaction						other-transaction	Previous Reserve Amount Balance	50.00		2025-10-01	2025-10-01 08:00:00 UTC						
+90000000001						other-transaction						other-transaction	Current Reserve Amount	-40.00		2025-10-15	2025-10-15 08:00:00 UTC						

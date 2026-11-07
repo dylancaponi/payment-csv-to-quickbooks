@@ -1,0 +1,5 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-04-01,,1500.00,USD,Credit,,,PAYROLL SAMPLE CO DIR DEP,,
+2025-04-02,,-4.75,USD,Debit,,,COFFEE PLACE #12 SAMPLETOWN,,
+2025-04-03,,-200.00,USD,Debit,,,CHECK 1001,1001,
+2025-04-03,,-12.30,USD,Debit,,,CAFÉ RÉSUMÉ & CO <online>,,

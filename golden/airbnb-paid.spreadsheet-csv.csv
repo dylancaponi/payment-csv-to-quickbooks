@@ -1,0 +1,7 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-10-11,,3116.11,USD,Credit,Sam Notreal,,Reservation - HMTEST0004 - Sam Notreal - Cozy getaway - 10/10/25-11/10/25,,
+2025-10-11,,95.00,USD,Credit,Jo Mockguest,,Resolution Payout - HMTEST0003 - Jo Mockguest - Lovely 2-bedroom - 9/17/25-9/27/25,,
+2025-10-11,,-629.53,USD,Debit,Kim Testperson,,Adjustment - HMTEST0002 - Kim Testperson - New studio - 9/24/25-10/8/25,,
+2025-10-11,,-2581.58,USD,Debit,,,"Airbnb payout - Transfer to Pat Example, Checking 0000 (USD)",payout-G-TESTPAYOUT1,
+2025-11-30,,190.95,USD,Credit,Lee Fakeguest,,"Reservation - HMTEST0001 - Lee Fakeguest - 2-bedroom, garden view - 11/2/25-12/7/25",,
+2025-11-30,,-190.95,USD,Debit,,,"Airbnb payout - Transfer to Pat Example, Checking 0000 (USD)",payout-G-TESTPAYOUT2,

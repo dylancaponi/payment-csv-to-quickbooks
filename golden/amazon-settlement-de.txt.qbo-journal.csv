@@ -1,0 +1,9 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20251029-1,10/29/2025,Sales of Product Income,,29.99,Product sales - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Sales Tax / VAT Payable,,5.70,Sales tax or VAT charged to buyers - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Bank Charges & Fees,4.50,,"Amazon selling fees (referral, refund admin, holdback) - Amazon payout 90000000002",
+BI-20251029-1,10/29/2025,Bank Charges & Fees,3.10,,FBA fulfillment fees - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Bank Charges & Fees,0.14,,Digital services fee - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Uncategorized Asset,,8.00,Reserve released from the previous settlement - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Uncategorized Asset,10.00,,Reserve held back by Amazon - Amazon payout 90000000002,
+BI-20251029-1,10/29/2025,Checking,25.95,,Deposit - Amazon payout 90000000002,

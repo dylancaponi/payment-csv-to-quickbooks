@@ -17,7 +17,7 @@ import { writeCSV } from '../csv.js';
 import { summarizePayouts, NO_PAYOUT_KEY } from '../payouts.js';
 import { validateTxns, asciiText, truncate, slug, csvSafe } from './common.js';
 
-const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'generic-bank': 'Bank' };
+const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'amazon-settlement': 'Amazon', ebay: 'eBay', mt940: 'Bank', camt053: 'Bank', 'generic-bank': 'Bank' };
 
 export const DEFAULT_ACCOUNTS = {
   bank: 'Checking',
@@ -33,7 +33,20 @@ export const DEFAULT_ACCOUNTS = {
   paymentsSent: 'Payments sent (uncategorized expense)',
   fundingCard: 'Credit card or other funding source',
   transfers: null, // defaults to the bank account
+  // Named lines some sources add (Amazon settlements). null = use the
+  // account in brackets: advertising (fees), fulfillmentFees (fees),
+  // reserve (clearing: money the marketplace holds back is still yours).
+  advertising: null,
+  fulfillmentFees: null,
+  reserve: null,
+  // Sales tax or VAT the marketplace did not withhold (Amazon): owed by the
+  // seller. null = "Sales Tax / VAT Payable", or the taxes account when
+  // the caller set one.
+  taxesPayable: null,
 };
+
+// Account keys a transaction may name in Txn.journalAccount.
+export const LINE_ACCOUNT_KEYS = ['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable'];
 
 const ACCOUNT_KEYS = Object.keys(DEFAULT_ACCOUNTS);
 
@@ -49,6 +62,10 @@ export function journalLines(rows, options = {}) {
     acct[k] = v;
   }
   if (!acct.transfers) acct.transfers = acct.bank;
+  if (!acct.advertising) acct.advertising = acct.fees;
+  if (!acct.fulfillmentFees) acct.fulfillmentFees = acct.fees;
+  if (!acct.reserve) acct.reserve = acct.clearing;
+  if (!acct.taxesPayable) acct.taxesPayable = (options.accounts && options.accounts.taxes) || 'Sales Tax / VAT Payable';
   if (options.journalPrefix !== undefined && typeof options.journalPrefix !== 'string') fail('BAD_OPTION', 'The journalPrefix option must be text.');
   const label = options.vendorName || VENDOR[options.sourceId] || 'Platform';
   const prefix = (options.journalPrefix || 'BI').replace(/[^A-Za-z0-9]/g, '').slice(0, 6) || 'BI';
@@ -66,21 +83,35 @@ export function journalLines(rows, options = {}) {
       if (!cents) return;
       lines.push({ account, debit: cents < 0 ? -cents : 0, credit: cents > 0 ? cents : 0, desc: `${desc} - ${what}` });
     };
-    add(acct.sales, toCents(r.grossSales), 'Gross sales');
-    add(acct.tips, toCents(r.tipsCollected), 'Tips collected (not sales)');
-    add(acct.giftCards, toCents(r.giftCardSales), 'Gift cards sold (owed until redeemed)');
-    add(acct.refunds, toCents(r.refunds), 'Refunds');
-    add(acct.fees, toCents(r.fees), 'Fees');
-    add(acct.taxes, toCents(r.taxes), 'Sales tax collected by marketplace');
-    const adj = toCents(r.adjustments);
+    // Parts of a bucket that a source gave their own named line (only
+    // Amazon settlements so far); the bucket line keeps the rest.
+    const details = Array.isArray(r.details) ? r.details : [];
+    const named = (bucket) => details.filter((d) => d.bucket === bucket).reduce((s, d) => s + toCents(d.amount), 0);
+    add(acct.sales, toCents(r.grossSales) - named('sales'), 'Gross sales');
+    add(acct.tips, toCents(r.tipsCollected) - named('tips'), 'Tips collected (not sales)');
+    add(acct.giftCards, toCents(r.giftCardSales) - named('giftCards'), 'Gift cards sold (owed until redeemed)');
+    add(acct.refunds, toCents(r.refunds) - named('refunds'), 'Refunds');
+    add(acct.fees, toCents(r.fees) - named('fees'), 'Fees');
+    add(acct.taxes, toCents(r.taxes) - named('taxes'), 'Sales tax collected by marketplace');
+    const adj = toCents(r.adjustments) - named('adjustments');
     add(adj >= 0 ? acct.adjustmentsIncome : acct.adjustmentsExpense, adj, 'Adjustments');
-    const sent = toCents(r.paymentsSent);
+    const sent = toCents(r.paymentsSent) - named('paymentsSent');
     add(acct.paymentsSent, sent, sent < 0 ? 'Payments sent' : 'Refunds received for payments sent');
+    const BUCKET_ACCOUNT = { sales: 'sales', tips: 'tips', giftCards: 'giftCards', refunds: 'refunds', fees: 'fees', taxes: 'taxes', paymentsSent: 'paymentsSent' };
+    for (const d of details) {
+      const cents = toCents(d.amount);
+      let key = d.account || BUCKET_ACCOUNT[d.bucket];
+      if (!key) key = cents >= 0 ? 'adjustmentsIncome' : 'adjustmentsExpense';
+      if (!Object.prototype.hasOwnProperty.call(acct, key) || !acct[key]) fail('BAD_TXN', `A transaction names the journal account "${String(d.account)}", which is not one of: ${LINE_ACCOUNT_KEYS.join(', ')}.`);
+      add(acct[key], cents, String(d.label));
+    }
     const payout = toCents(r.payoutAmount);
     const toBank = toCents(r.transfersToBank);
     const fromBank = toCents(r.transfersFromBank);
     // Assets (bank, clearing) are debited when they grow: negate.
-    add(acct.bank, -payout, 'Deposit');
+    // A negative settlement total (named-line sources only, so other
+    // sources keep their exact text) is a charge, not a deposit.
+    add(acct.bank, -payout, payout < 0 && details.length ? `Charged by ${label}` : 'Deposit');
     // Own-money transfers: bank against the platform clearing account.
     if (toBank) {
       add(acct.transfers, -toBank, `Transfer from ${label} to bank`);
@@ -120,6 +151,11 @@ export function writeJournal(transactions, options = {}) {
   // accounts. Only bank-feed files are offered for Wise.
   if (options.sourceId === 'wise' || transactions.some((t) => t.raw && Object.keys(t.raw).some((k) => /^(transferwise|wise) id$/i.test(k.trim())))) {
     fail('NOT_SUPPORTED', 'Journal entries are not available for Wise statements: the statement does not say which money coming in is sales and which is your own money, a loan or a refund, so the entries would be wrong. Choose a bank file instead (QuickBooks .qbo, QuickBooks Online CSV, Xero CSV, Quicken .qfx or OFX) and categorize each transaction in your accounting software.');
+  }
+  // Bank statements (MT940, camt.053) say nothing about which money is
+  // sales, so they get the same refusal as Wise.
+  if (options.sourceId === 'mt940' || options.sourceId === 'camt053' || transactions.some((t) => t.raw && (Object.prototype.hasOwnProperty.call(t.raw, 'MT940 :61:') || Object.prototype.hasOwnProperty.call(t.raw, 'camt.053 entry')))) {
+    fail('NOT_SUPPORTED', 'Journal entries are not available for bank statements (MT940 or camt.053): a statement does not say which money coming in is sales and which is a transfer, a loan or a refund, so the entries would be wrong. Choose a bank file instead (QuickBooks .qbo, QuickBooks Online CSV, Xero CSV, OFX or a spreadsheet CSV) and categorize each transaction in your accounting software.');
   }
   const groupBy = options.groupBy || (transactions.some((t) => t.payoutId) ? 'payout' : 'month');
   let rows = summarizePayouts(transactions, { groupBy });

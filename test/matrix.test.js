@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { parse, write, detectSource } from '../index.js';
 import { CASES, TARGET_IDS, readFixture, centsOf, UNSUPPORTED } from '../test-support/fixtures.js';
 import { validateOfx } from '../test-support/ofx-validator.js';
-import { checkQboCsv, checkXeroCsv, checkJournal } from '../test-support/csv-checks.js';
+import { checkQboCsv, checkXeroCsv, checkJournal, checkSpreadsheetCsv } from '../test-support/csv-checks.js';
 
 function mainCurrency(txns) {
   const m = new Map();
@@ -27,7 +27,7 @@ for (const c of CASES) {
 
     test('parses to the hand-computed count and total', () => {
       assert.equal(parsed.transactions.length, c.count);
-      assert.equal(centsOf(parsed.transactions), c.sumCents);
+      if (c.sumCents !== null) assert.equal(centsOf(parsed.transactions), c.sumCents);
       if (c.byCurrency) for (const [k, v] of Object.entries(c.byCurrency)) assert.equal(centsOf(parsed.transactions, k), v);
       for (const t of parsed.transactions) {
         assert.match(t.date, /^\d{4}-\d{2}-\d{2}$/);
@@ -64,6 +64,10 @@ for (const c of CASES) {
             assert.equal(v.sumCents, expectSum);
           } else if (target === 'xero-csv') {
             const v = checkXeroCsv(out.content);
+            assert.deepEqual(v.errors, []);
+            assert.equal(v.sumCents, expectSum);
+          } else if (target === 'spreadsheet-csv') {
+            const v = checkSpreadsheetCsv(out.content);
             assert.deepEqual(v.errors, []);
             assert.equal(v.sumCents, expectSum);
           } else {

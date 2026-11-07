@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2026-03-02,,15.75,USD,Credit,Jesse Example,,Sale - Notion Budget Template - Jesse Example,uzP3TestPurchase001==:sale,
+2026-03-03,,7.40,USD,Credit,buyer2@example.com,,"Sale - Icon Pack, Vol. 2 - buyer2@example.com",uzP3TestPurchase002==:sale,
+2026-03-05,,15.75,USD,Credit,Morgan Example,,Sale - Notion Budget Template - Morgan Example,uzP3TestPurchase003==:sale,
+2026-03-08,,-15.75,USD,Debit,Morgan Example,,Full Refund - Notion Budget Template - Morgan Example,uzP3TestPurchase003==:full-refund,
+2026-03-10,,-0.50,USD,Debit,,,Payout Fee,,

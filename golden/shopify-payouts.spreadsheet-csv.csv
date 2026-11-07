@@ -1,0 +1,13 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2022-11-20,,1200.00,USD,Credit,,,Shopify charges (payout 2022-11-20),,
+2022-11-20,,-35.10,USD,Debit,,,Shopify fees (payout 2022-11-20),,
+2022-11-20,,-1164.90,USD,Debit,,,Shopify payout 2022-11-20,,
+2022-11-21,,-179.54,USD,Debit,,,Shopify refunds (failed payout 2022-11-21),,
+2023-04-27,,75.91,USD,Credit,,,Shopify charges (payout 2023-04-27),,
+2023-04-27,,10.47,USD,Credit,,,Shopify adjustments (payout 2023-04-27),,
+2023-04-27,,-4.33,USD,Debit,,,Shopify fees (payout 2023-04-27),,
+2023-04-27,,-82.05,USD,Debit,,,Shopify payout 2023-04-27,,
+2023-05-30,,53.96,USD,Credit,,,Shopify charges (payout 2023-05-30),,
+2023-05-30,,-7.99,USD,Debit,,,Shopify refunds (payout 2023-05-30),,
+2023-05-30,,-2.46,USD,Debit,,,Shopify fees (payout 2023-05-30),,
+2023-05-30,,-43.51,USD,Debit,,,Shopify payout 2023-05-30,,

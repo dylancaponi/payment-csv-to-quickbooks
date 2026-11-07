@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-03-02,,1203.27,USD,Credit,Riley Clientname,,"Riley Clientname - MONTHLY - $1 for the first 2 Months, then $6.99 / Month",9WD00000TEST0001,
+2025-03-12,,47.76,USD,Credit,Casey Buyerperson,,"Casey Buyerperson - Print, 8x10 ""Sunset""",9WD00000TEST0002,
+2025-03-20,,-48.80,USD,Debit,Casey Buyerperson,,Casey Buyerperson - Payment Refund,9WD00000TEST0006,
+2025-03-28,,-21.84,USD,Debit,Sample Hosting Co,,Currency conversion for Sample Hosting Co (EUR 20.00),9WD00000TEST0008,
+2025-03-30,,-1000.00,USD,Debit,,,General Withdrawal,9WD00000TEST0010,

@@ -1,0 +1,3 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-01-15,,1191.99,EUR,Credit,Kunde Beispiel,,Kunde Beispiel,7EU00000TEST0001,
+2025-02-02,,-1000.00,EUR,Debit,,,General Withdrawal,7EU00000TEST0002,

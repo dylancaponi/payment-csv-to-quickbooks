@@ -1,0 +1,12 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-03-08,,1250.00,USD,Credit,,,Payment for Order #3600000001,,
+2025-03-08,,-1.62,USD,Debit,,,Processing fee (Order #3600000001),,
+2025-03-08,,-3.36,USD,Debit,,,Sales tax paid by buyer (Order #3600000001),,
+2025-03-08,,-2.73,USD,Debit,,,"Transaction fee: Hand-thrown mug, ""speckled"" glaze... (Order #3600000001)",,
+2025-03-08,,-0.31,USD,Debit,,,Transaction fee: Shipping (Order #3600000001),,
+2025-03-09,,-0.20,USD,Debit,,,Listing fee ($0.20 USD) (Listing #1500000001),,
+2025-03-20,,1.30,USD,Credit,,,Refund to buyer for sales tax (Order #3600000002),,
+2025-03-20,,0.89,USD,Credit,,,Credit for processing fee (Order #3600000002),,
+2025-03-20,,-17.37,USD,Debit,,,Refund to buyer for Order #3600000002,,
+2025-03-28,,-0.86,USD,Debit,,,"Etsy Ads (Bill for click-throughs to your shop on Mar 27, 2025)",,
+2025-03-31,,-1208.35,USD,Debit,,,"$1,208.35 sent to your bank account",,

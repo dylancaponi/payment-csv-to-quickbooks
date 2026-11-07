@@ -1,0 +1,11 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-06-20,,23.97,USD,Credit,,,Charge - Order 1041,txn_9Z0TestCharge0001,
+2025-06-20,,31.39,USD,Credit,,,Charge - Order 1042,txn_9Z0TestCharge0002,
+2025-06-22,,-55.36,USD,Debit,,,Payout - STRIPE PAYOUT,txn_9Z0TestPayout0001,
+2025-06-24,,970.70,USD,Credit,,,"Charge - Order 1044, 2 seats",txn_9Z0TestCharge0004,
+2025-06-24,,583.51,USD,Credit,,,Charge - Order 1045,txn_9Z0TestCharge0005,
+2025-06-25,,-20.00,USD,Debit,,,Refund - REFUND FOR CHARGE (Order 1043),txn_9Z0TestRefund0001,
+2025-06-26,,-45.00,USD,Debit,,,Dispute - Chargeback withdrawal for ch_9Z0TestCharge0003,txn_9Z0TestDispute001,
+2025-06-27,,-0.08,USD,Debit,,,Stripe fee - Radar (2025-06-26): Radar for Fraud Teams,txn_9Z0TestRadar00001,
+2025-06-30,,-1489.13,USD,Debit,,,Payout - STRIPE PAYOUT,txn_9Z0TestPayout0002,
+2025-06-30,,11.35,USD,Credit,,,Charge - Order 1046,txn_9Z0TestCharge0006,

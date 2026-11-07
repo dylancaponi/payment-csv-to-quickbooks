@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-01-23,,11.35,USD,Credit,,,Charge,txn_8Y1TestAAAA00001,
+2025-01-23,,-0.77,USD,Debit,,,Refund - REFUND FOR PAYMENT,txn_8Y1TestAAAA00002,
+2025-01-24,,2427.20,USD,Credit,,,"Charge - Invoice INV-0007, annual plan",txn_8Y1TestAAAA00003,
+2025-01-25,,-0.50,USD,Debit,,,Stripe fee - Card payments (2025-01-24): Transaction network costs,txn_8Y1TestAAAA00004,
+2025-01-26,,15.00,USD,Credit,,,Dispute won,txn_8Y1TestAAAA00005,

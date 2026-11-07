@@ -133,3 +133,32 @@ export function checkJournal(text, { dateFormat = 'MM/DD/YYYY', maxLines = Infin
   for (const [no, e] of entries) if (e.debit !== e.credit) errors.push(`Entry ${no} does not balance: debits ${e.debit} credits ${e.credit}`);
   return { errors, entries };
 }
+
+// Spreadsheet CSV (comma style): BOM, fixed 10-column header, ISO dates,
+// signed decimal-point amounts, Debit/Credit agreeing with the sign, no text
+// cell starting with a formula character, balance chain when present.
+export function checkSpreadsheetCsv(text) {
+  const errors = [];
+  if (!text.startsWith('﻿')) errors.push('missing UTF-8 BOM');
+  const rows = strictParse(text.replace(/^﻿/, ''));
+  const head = ['Date', 'Value date', 'Amount', 'Currency', 'Debit/Credit', 'Counterparty', 'Counterparty account', 'Description', 'Reference', 'Balance'];
+  if (JSON.stringify(rows[0]) !== JSON.stringify(head)) errors.push(`bad header ${JSON.stringify(rows[0])}`);
+  let sumCents = 0;
+  let prevBal = null;
+  rows.slice(1).forEach((r, i) => {
+    if (r.length !== 10) { errors.push(`row ${i + 2} has ${r.length} cells`); return; }
+    if (!validDate(r[0], 'YYYY-MM-DD')) errors.push(`row ${i + 2} bad date ${r[0]}`);
+    if (r[1] && !validDate(r[1], 'YYYY-MM-DD')) errors.push(`row ${i + 2} bad value date ${r[1]}`);
+    if (!MONEY.test(r[2])) { errors.push(`row ${i + 2} bad amount ${r[2]}`); return; }
+    const c = cents(r[2]);
+    sumCents += c;
+    if (!/^[A-Z]{3}$/.test(r[3])) errors.push(`row ${i + 2} bad currency`);
+    if ((c < 0 ? 'Debit' : 'Credit') !== r[4]) errors.push(`row ${i + 2} Debit/Credit does not match the sign`);
+    for (const k of [5, 6, 7, 8]) if (/^[=+\-@\t\r]/.test(r[k])) errors.push(`row ${i + 2} unguarded formula ${r[k]}`);
+    if (r[9]) {
+      if (!MONEY.test(r[9])) errors.push(`row ${i + 2} bad balance`);
+      else { const b = cents(r[9]); if (prevBal !== null && prevBal + c !== b) errors.push(`row ${i + 2} balance chain broken`); prevBal = b; }
+    }
+  });
+  return { errors, rows, sumCents };
+}

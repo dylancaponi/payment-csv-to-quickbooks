@@ -113,6 +113,22 @@ const PROFILES = {
   ofx: { ext: 'ofx', mime: 'application/x-ofx', intuit: false, product: 'OFX' },
 };
 
+// Default ACCTID for a bank statement account: the account number in upper
+// case (letters and digits only) followed by the currency, always, so the
+// same account gets the same id in every file whether or not that file also
+// shows the account in another currency, and the EUR and USD parts of one
+// account never share a register. When that is longer than the 22
+// characters OFX allows: the last 12 characters of the account number (the
+// part people recognise), 7 hex digits of a hash of the full number, and the
+// currency, so two long numbers that share their last characters still get
+// different ids.
+export function statementAcctId(account, currency) {
+  const a = asciiText(account).toUpperCase().replace(/[^A-Z0-9]/g, '') || 'ACCOUNT';
+  const c = String(currency || '').toUpperCase();
+  if (a.length + c.length <= 22) return a + c;
+  return a.slice(-12) + fnv1a64(a).slice(0, 7).toUpperCase() + c;
+}
+
 export function writeOfx(targetId, transactions, options = {}) {
   const p = PROFILES[targetId];
   const warnings = [];
@@ -137,9 +153,13 @@ export function writeOfx(targetId, transactions, options = {}) {
   const fid = p.intuit ? intuBid : String(options.fid || '1001');
   if (options.accountId !== undefined && options.accountId !== null && typeof options.accountId !== 'string' && typeof options.accountId !== 'number') fail('BAD_OPTION', 'The accountId option must be text.');
   if (options.bankName !== undefined && options.bankName !== null && typeof options.bankName !== 'string') fail('BAD_OPTION', 'The bankName option must be text.');
-  const rawAcct = options.accountId ? asciiText(options.accountId).replace(/[^A-Za-z0-9-]/g, '') : '';
+  // Bank statements (MT940, camt.053) carry the real account number on every
+  // transaction; it becomes the default ACCTID so two accounts never share
+  // one register. Other sources set no account and keep the hashed default.
+  const stmtAcct = kept.length && typeof kept[0].account === 'string' && kept.every((t) => t.account === kept[0].account) ? statementAcctId(kept[0].account, currency) : '';
+  const rawAcct = options.accountId ? asciiText(options.accountId).replace(/[^A-Za-z0-9-]/g, '') : stmtAcct;
   let acctId = rawAcct || ('BI' + fnv1a64(`${options.sourceId || ''}|${currency}`).slice(0, 10).toUpperCase());
-  if (acctId.length > 22) { warnings.push('Account ID was longer than 22 characters and was shortened (OFX limit).'); acctId = acctId.slice(-22); }
+  if (acctId.length > 22) { if (options.accountId) warnings.push('Account ID was longer than 22 characters and was shortened (OFX limit).'); acctId = acctId.slice(-22); }
   const bankId = String(options.routingNumber || options.bankId || '000000000').replace(/\D/g, '').slice(0, 9) || '000000000';
   let ledgerBalanceCents = null;
   if (options.ledgerBalance !== undefined && options.ledgerBalance !== null && options.ledgerBalance !== '') {

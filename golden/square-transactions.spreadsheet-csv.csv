@@ -1,0 +1,5 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2024-08-22,,1201.84,USD,Credit,"'=HYPERLINK(""http://example.invalid"")",,"'=HYPERLINK(""http://example.invalid"") - Table, oak",PAYSQ0005,
+2024-08-23,,-35.00,USD,Debit,,,Scarf,PAYSQ0004,
+2024-08-23,,29.20,USD,Credit,,,Lamp,PAYSQ0003,
+2024-08-24,,19.47,USD,Credit,Ana Placeholder,,Ana Placeholder - Brooch,PAYSQ0001,

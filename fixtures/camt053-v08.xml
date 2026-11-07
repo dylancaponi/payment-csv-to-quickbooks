@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Constructed test file for camt.053.001.08 element shapes (Sts/Cd, RltdPties/Dbtr/Pty/Nm, TxDtls/Amt,
+     prefixed namespace). Names, IBANs and amounts are invented. -->
+<ns:Document xmlns:ns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+<ns:BkToCstmrStmt>
+<ns:GrpHdr><ns:MsgId>V08</ns:MsgId><ns:CreDtTm>2026-01-02T06:00:00</ns:CreDtTm></ns:GrpHdr>
+<ns:Stmt>
+<ns:Id>V08-1</ns:Id>
+<ns:Acct><ns:Id><ns:IBAN>FR1420041010050500013M02606</ns:IBAN></ns:Id><ns:Ccy>EUR</ns:Ccy></ns:Acct>
+<ns:Bal><ns:Tp><ns:CdOrPrtry><ns:Cd>PRCD</ns:Cd></ns:CdOrPrtry></ns:Tp><ns:Amt Ccy="EUR">100.00</ns:Amt><ns:CdtDbtInd>CRDT</ns:CdtDbtInd><ns:Dt><ns:Dt>2026-01-01</ns:Dt></ns:Dt></ns:Bal>
+<ns:Bal><ns:Tp><ns:CdOrPrtry><ns:Cd>CLBD</ns:Cd></ns:CdOrPrtry></ns:Tp><ns:Amt Ccy="EUR">75.50</ns:Amt><ns:CdtDbtInd>CRDT</ns:CdtDbtInd><ns:Dt><ns:Dt>2026-01-02</ns:Dt></ns:Dt></ns:Bal>
+<ns:Ntry>
+<ns:Amt Ccy="EUR">24.50</ns:Amt><ns:CdtDbtInd>DBIT</ns:CdtDbtInd><ns:Sts><ns:Cd>BOOK</ns:Cd></ns:Sts>
+<ns:BookgDt><ns:DtTm>2026-01-02T10:15:00+01:00</ns:DtTm></ns:BookgDt><ns:ValDt><ns:Dt>2026-01-02</ns:Dt></ns:ValDt>
+<ns:AcctSvcrRef>V08-E1</ns:AcctSvcrRef>
+<ns:NtryDtls><ns:TxDtls>
+<ns:Amt Ccy="EUR">24.50</ns:Amt><ns:CdtDbtInd>DBIT</ns:CdtDbtInd>
+<ns:RltdPties><ns:Cdtr><ns:Pty><ns:Nm>Boulangerie <![CDATA[Paul & Fils]]></ns:Nm></ns:Pty></ns:Cdtr></ns:RltdPties>
+<ns:RmtInf><ns:Ustrd>Facture 77</ns:Ustrd></ns:RmtInf>
+</ns:TxDtls></ns:NtryDtls>
+</ns:Ntry>
+</ns:Stmt>
+</ns:BkToCstmrStmt>
+</ns:Document>

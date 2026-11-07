@@ -111,9 +111,22 @@ export function summarizePayouts(transactions, options = {}) {
     const sum = {};
     for (const b of BUCKETS) sum[b] = 0;
     let from = null; let to = null; let payoutDate = null; let payoutRows = 0; let declared = null;
+    // Named journal lines (Txn.journalLine, optional Txn.journalAccount):
+    // the part of a bucket that gets its own line in the journal. Only
+    // present when a source sets them (Amazon settlements), so rows from
+    // every other source keep their exact shape.
+    const details = new Map();
     for (const t of g.txns) {
       const c = components(t);
       for (const b of BUCKETS) sum[b] += c[b];
+      if (t.journalLine && t.type !== 'payout' && t.type !== 'transfer') {
+        for (const b of BUCKETS) {
+          if (!c[b]) continue;
+          const dk = `${b}|${t.journalAccount || ''}|${t.journalLine}`;
+          if (!details.has(dk)) details.set(dk, { bucket: b, account: t.journalAccount || null, label: t.journalLine, cents: 0 });
+          details.get(dk).cents += c[b];
+        }
+      }
       if (!from || t.date < from) from = t.date;
       if (!to || t.date > to) to = t.date;
       if (t.type === 'payout') { payoutRows++; if (!payoutDate || t.date > payoutDate) payoutDate = t.date; }
@@ -138,14 +151,16 @@ export function summarizePayouts(transactions, options = {}) {
     let date;
     if (groupBy === 'month') date = lastDayOfMonth(g.key);
     else date = (g.key !== NO_PAYOUT_KEY && declared) || payoutDate || to;
-    rows.push({
+    const row = {
       key: g.key, groupBy, date, currency: g.currency, transactionCount: g.txns.filter((t) => t.type !== 'payout').length,
       grossSales: fromCents(sum.sales), tipsCollected: fromCents(sum.tips), giftCardSales: fromCents(sum.giftCards), refunds: fromCents(sum.refunds), fees: fromCents(sum.fees), taxes: fromCents(sum.taxes),
       adjustments: fromCents(sum.adjustments), paymentsSent: fromCents(sum.paymentsSent), netActivity: fromCents(net),
       transfersToBank: fromCents(outToBank), transfersFromBank: fromCents(inFromBank),
       fundingToCard: fromCents(outToCard), fundingFromCard: fromCents(inFromCard), payoutAmount: fromCents(payout), hasPayoutRow: payoutRows > 0,
       mixedCurrencyPayout: mixed, difference: fromCents(net - payout - toBank), from, to,
-    });
+    };
+    if (details.size) row.details = [...details.values()].filter((d) => d.cents).map((d) => ({ bucket: d.bucket, account: d.account, label: d.label, amount: fromCents(d.cents) }));
+    rows.push(row);
   }
   rows.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.key < b.key ? -1 : a.key > b.key ? 1 : a.currency < b.currency ? -1 : 1));
   return rows;

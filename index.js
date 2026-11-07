@@ -15,8 +15,13 @@ import * as generic from './src/sources/generic.js';
 import * as square from './src/sources/square.js';
 import * as shopify from './src/sources/shopify.js';
 import * as wise from './src/sources/wise.js';
+import * as mt940 from './src/sources/mt940.js';
+import * as camt from './src/sources/camt.js';
+import * as amazon from './src/sources/amazon.js';
+import * as ebay from './src/sources/ebay.js';
 import { writeOfx } from './src/targets/ofx.js';
 import { writeQboCsv, writeXeroCsv } from './src/targets/csvbank.js';
+import { writeSpreadsheetCsv } from './src/targets/spreadsheet.js';
 import { writeJournal } from './src/targets/journal.js';
 import { summarizePayouts as summarize } from './src/payouts.js';
 import { normalizeTxns } from './src/targets/common.js';
@@ -40,8 +45,31 @@ const PARSERS = {
   'shopify-transactions': { detect: (rows) => shopify.detect(rows, 'shopify-transactions'), parse: shopify.parseTransactionsFile },
   'shopify-payouts': { detect: (rows) => shopify.detect(rows, 'shopify-payouts'), parse: shopify.parsePayoutsFile },
   wise: { detect: (rows) => wise.detect(rows), parse: wise.parse },
+  'amazon-settlement': { detect: (rows) => amazon.detect(rows), parse: amazon.parse },
+  ebay: { detect: (rows) => ebay.detect(rows), parse: ebay.parse },
   'generic-bank': { detect: (rows) => generic.detect(rows), parse: generic.parse },
 };
+
+// Bank statement files that are not CSV (MT940 text, camt.053 XML). They
+// are recognised from the text itself before any CSV reading.
+const TEXT_PARSERS = {
+  mt940: { parse: mt940.parse },
+  camt053: { parse: camt.parse },
+};
+
+const MT940_REASON = 'Found MT940 statement fields (:20:, :25:, :60F:, :61:, :62F:).';
+
+// { sourceId, reason } for a statement file, { refuse } for a related file
+// we do not convert, or null for anything else.
+function statementSniff(text) {
+  const m = mt940.sniff(text);
+  if (m && m.kind === 'mt940-bad') return { refuse: m.reason };
+  if (m) return m.kind === 'mt940' ? { sourceId: 'mt940', reason: MT940_REASON } : { refuse: 'This is an MT942 interim (intraday) report, not an MT940 statement. MT942 has no opening and closing balances, so it cannot be checked. Download the MT940 statement (end of day) from your bank instead.' };
+  const c = camt.sniff(text);
+  if (!c) return null;
+  if (c.kind === 'camt053') return { sourceId: 'camt053', reason: `Found an ISO 20022 bank statement (${c.version}).` };
+  return { refuse: camt.refusal(c) };
+}
 
 const MAX_BYTES = 50 * 1024 * 1024;
 
@@ -70,7 +98,7 @@ function rowsOf(text, options = {}) {
 // sales, Shopify orders and products): a plain "wrong export" message instead
 // of a bank-CSV guess.
 function wrongExportReason(rows) {
-  for (const f of [square.wrongExport, shopify.wrongExport]) {
+  for (const f of [square.wrongExport, shopify.wrongExport, amazon.wrongExport, ebay.wrongExport]) {
     let r = null;
     try { r = f(rows); } catch { r = null; }
     if (r) return r;
@@ -85,6 +113,8 @@ export function detectSource(text) {
 function detectImpl(text) {
   const bad = sniffNonCsv(text);
   if (bad) return { sourceId: null, confidence: 0, reason: bad };
+  const st = statementSniff(text);
+  if (st) return st.sourceId ? { sourceId: st.sourceId, confidence: 0.98, reason: st.reason } : { sourceId: null, confidence: 0, reason: st.refuse };
   let rows;
   try {
     rows = parseCSV(text.slice(0, 200000), { maxRows: 60 });
@@ -100,7 +130,7 @@ function detectImpl(text) {
     if (r.score > best.confidence) best = { sourceId: id, confidence: r.score, reason: r.reason || '' };
   }
   if (!best.sourceId || best.confidence < 0.3) {
-    return { sourceId: null, confidence: best.confidence, reason: best.reason || "We couldn't recognize this file. It needs a header row with at least a date column and an amount column. If it came from Venmo, Cash App, PayPal, Stripe, Square, Shopify, Wise, Etsy, Airbnb or Gumroad, make sure you uploaded the original CSV download." };
+    return { sourceId: null, confidence: best.confidence, reason: best.reason || "We couldn't recognize this file. It needs a header row with at least a date column and an amount column. If it came from Venmo, Cash App, PayPal, Stripe, Square, Shopify, Wise, Etsy, Airbnb, Gumroad, Amazon or eBay, make sure you uploaded the original download." };
   }
   if (best.confidence < 0.5 && best.reason) best.reason += ' Check the preview before converting.';
   return best;
@@ -186,8 +216,11 @@ function parseImpl(sourceId, text, options = {}) {
     if (!d.sourceId) fail('UNRECOGNIZED', d.reason);
     id = d.sourceId;
   }
+  if (Object.prototype.hasOwnProperty.call(TEXT_PARSERS, id)) return parseStatementFile(id, text, options, warnings);
   const p = Object.prototype.hasOwnProperty.call(PARSERS, id) ? PARSERS[id] : null;
-  if (!p) fail('UNKNOWN_SOURCE', `Unknown source "${sourceId}". Choose one of: ${Object.keys(PARSERS).join(', ')}.`);
+  if (!p) fail('UNKNOWN_SOURCE', `Unknown source "${sourceId}". Choose one of: ${[...Object.keys(PARSERS), ...Object.keys(TEXT_PARSERS)].join(', ')}.`);
+  const st = statementSniff(text);
+  if (st) fail('WRONG_SOURCE', st.sourceId ? `This is ${st.sourceId === 'mt940' ? 'an MT940' : 'a camt.053'} bank statement, not a CSV export. Choose ${st.sourceId === 'mt940' ? 'MT940' : 'camt.053'} as the file type.` : st.refuse);
   const raw = rowsOf(text, options);
   if (id === 'generic-bank') {
     const wrong = wrongExportReason(raw.slice(0, 60));
@@ -217,6 +250,13 @@ function parseImpl(sourceId, text, options = {}) {
   return { transactions, warnings: dedupe(res.warnings), meta: res.meta };
 }
 
+function parseStatementFile(id, text, options, warnings) {
+  const res = TEXT_PARSERS[id].parse(text, options, warnings);
+  res.meta.sourceId = id;
+  if (!res.transactions.length) warnings.push('No transactions were found in this file. Check that you exported the right date range and the right account.');
+  return { transactions: res.transactions, warnings: dedupe(warnings), meta: res.meta };
+}
+
 function dedupe(arr) {
   return [...new Set(arr)];
 }
@@ -234,13 +274,35 @@ function writeImpl(targetId, transactions, options = {}) {
       res = writeQboCsv(targetId, transactions, options); break;
     case 'xero-csv':
       res = writeXeroCsv(transactions, options); break;
+    case 'spreadsheet-csv':
+      res = writeSpreadsheetCsv(transactions, options); break;
     case 'qbo-journal':
       res = writeJournal(transactions, options); break;
     default:
       fail('UNKNOWN_TARGET', `Unknown output format "${String(targetId)}". Choose one of: ${TARGETS.map((t) => t.id).join(', ')}.`);
   }
+  // Amazon settlements in a bank-style file: the lines describe the Amazon
+  // balance, not the bank (review finding 5). Not for the spreadsheet,
+  // which is not imported anywhere.
+  const bankStyle = targetId !== 'qbo-journal' && targetId !== 'spreadsheet-csv';
+  if (bankStyle && isEbayReport(transactions, options)) {
+    res.warnings.unshift('Import this file into a separate eBay clearing account (a bank or other current asset account named for example "eBay"), not your checking account. It lists each payout\'s sales, fees, refunds and holds, and each payout\'s last line moves the money out to your bank, where it matches the deposit in your bank feed. Imported into checking, every sale and fee would land in the bank register and each payout would be counted twice.');
+  } else if (bankStyle && isAmazonSettlement(transactions, options)) {
+    res.warnings.unshift('Import this file into a separate Amazon clearing account (a bank or other current asset account named for example "Amazon"), not your checking account. It lists the settlement\'s sales, fees, tax and reserve, and its last line moves the deposit out to your bank, where it matches the deposit in your bank feed. Imported into checking, every sale and fee would land in the bank register and the deposit would be counted twice.');
+  }
   res.warnings = dedupe(res.warnings);
   return res;
+}
+
+function isEbayReport(transactions, options) {
+  if (options.sourceId === 'ebay') return true;
+  if (options.sourceId) return false;
+  return Array.isArray(transactions) && transactions.some((t) => t && t.journalLine && typeof t.id === 'string' && t.raw && typeof t.raw === 'object' && Object.prototype.hasOwnProperty.call(t.raw, 'Payout ID') && /^eBay payout /.test(String(t.description)));
+}
+
+function isAmazonSettlement(transactions, options) {
+  if (options.sourceId === 'amazon-settlement') return true;
+  return Array.isArray(transactions) && transactions.some((t) => t && t.journalLine && t.raw && typeof t.raw === 'object' && Object.prototype.hasOwnProperty.call(t.raw, 'settlement-id'));
 }
 
 export const parse = guarded(parseImpl);

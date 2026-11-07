@@ -1,0 +1,7 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-01-30,,98.74,USD,Credit,,,Charge - Gift card,txn_7X2TestBBBB00001,
+2025-01-31,,48.24,USD,Credit,,,"Charge - Monthly plan, January",txn_7X2TestBBBB00002,
+2025-01-31,,-10.00,USD,Debit,,,Refund - Partial refund,txn_7X2TestBBBB00003,
+2025-02-01,,-0.50,USD,Debit,,,Stripe fee - Radar (2025-01-31): Standard,txn_7X2TestBBBB00004,
+2025-02-02,,291.00,USD,Credit,,,Charge - Order 2001,txn_7X2TestBBBB00005,
+2025-02-03,,-45.00,USD,Debit,,,Dispute,txn_7X2TestBBBB00006,

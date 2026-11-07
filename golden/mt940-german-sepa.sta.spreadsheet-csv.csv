@@ -1,0 +1,13 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2007-09-04,2007-09-04,335.33,EUR,Credit,,,TFNR 44005 00001MTLG:Grund nicht spezifiziert Reject aus SEPA-Ueberweisungsauftrag,TFNR 44005 00001MTLG:Grund nicht spezifiziert Reject aus SEPA-Ueberweisungsauftrag,-3829142.54
+2007-09-04,2007-09-04,915311.55,EUR,Credit,,,TFNR 44005 00002MTLG:Konto gesperrt Rueckueberweisung aus SEPA-Ueberweisungsauftrag,TFNR 44005 00002MTLG:Konto gesperrt Rueckueberweisung aus SEPA-Ueberweisungsauftrag,-2913830.99
+2007-09-04,2007-09-04,-157.34,EUR,Debit,Empfaenger 1 mit 70 Zeichen Empfaenger 1 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 001 DE,TFNR 01041 00001,-2913988.33
+2007-09-04,2007-09-04,-6002.17,EUR,Debit,Empfaenger 2 mit 70 Zeichen Empfaenger 2 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 002 DE,TFNR 01041 00002,-2919990.50
+2007-09-04,2007-09-04,-6002.17,EUR,Debit,Empfaenger 5 mit 70 Zeichen Empfaenger 5 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 005 DE,TFNR 01041 00005,-2925992.67
+2007-09-04,2007-09-04,-6002.17,EUR,Debit,Empfaenger 6 mit 70 Zeichen Empfaenger 6 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 006 DE,TFNR 01041 00006,-2931994.84
+2007-09-04,2007-09-04,-6002.17,EUR,Debit,Empfaenger 4 mit 70 Zeichen Empfaenger 4 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 004 DE,TFNR 01041 00004,-2937997.01
+2007-09-04,2007-09-04,-6002.17,EUR,Debit,Empfaenger 3 mit 70 Zeichen Empfaenger 3 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 003 DE,TFNR 01041 00003,-2943999.18
+2007-09-04,2007-09-04,-155344.11,EUR,Debit,Empfaenger 7 mit 70 Zeichen Empfaenger 7 mit 70 Zeiche,FR1420041010050500013M02606,Strukturierter Verwendungszweck EBB 01041 007 DEMTLG:Ggf.Meldevorschriften beachten,TFNR 01041 00007,-3099343.29
+2007-09-04,2007-09-04,-415603.93,EUR,Debit,,,MTLG:SBI-SEPA-SAMMELUEB.Anz :3 Referenz: 1930467116 Erf assung mit 003 Zahlungen,649D24F7C6EDAC53,-3514947.22
+2007-09-04,2007-09-04,-589103.86,EUR,Debit,,,TFNr 05003 MSGID CTSc-01 BC PPPMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000003 Zahlungen,TFNr 05003 MSGID CTSc-01 BC PPPMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000003 Zahlungen,-4104051.08
+2007-09-04,2007-09-04,-915646.88,EUR,Debit,,,TFNr 44005 MSGID CTSc-02 EBBMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000002 Zahlungen,TFNr 44005 MSGID CTSc-02 EBBMTLG:SEPA-Ueberweisungsauftrag Datei mit 0000002 Zahlungen,-5019697.96

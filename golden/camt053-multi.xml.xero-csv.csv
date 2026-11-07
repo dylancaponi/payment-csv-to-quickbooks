@@ -1,0 +1,7 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+12/30/2025,660.12,Müller & Söhne GmbH,Invoice 2025-118,ASR-0001,
+12/30/2025,-289.00,"'=HYPERLINK(""http://x"")",RF18539007547034,ASR-0002,
+12/31/2025,50.00,,Reversal: Return of direct debit,ASR-0003,
+12/31/2025,-30.00,Stadtwerke,Strom Dezember,ASR-0004/DD-1,
+12/31/2025,-50.00,Telekom,Mobilfunk Dezember,ASR-0004/DD-2,
+12/31/2025,-1.50,,Account fee December,ASR-0005,

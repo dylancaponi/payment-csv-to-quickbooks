@@ -1,0 +1,9 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-03-02,,25.00,USD,Credit,Riley Sample,,Riley Sample - Pizza night,4012345678901234567,
+2025-03-03,,1961.90,USD,Credit,Morgan Test,,Morgan Test - Logo design & brand kit,4012345678901234570,
+2025-03-05,,-1000.00,USD,Debit,Jordan Placeholder,,Jordan Placeholder - Rent share March,4012345678901234568,
+2025-03-07,,-80.00,USD,Debit,Casey Demo,,Casey Demo - Concert tickets,4012345678901234569,
+2025-03-07,,80.00,USD,Credit,FAKE BANK Personal Checking *0000,,Funded by FAKE BANK Personal Checking *0000,4012345678901234569:funding,
+2025-03-12,,-500.00,USD,Debit,,,Standard Transfer to FAKE BANK *0000,4012345678901234571,
+2025-03-14,,15.00,USD,Credit,Riley Sample,,Riley Sample - Coffee,4012345678901234572,
+2025-03-14,,15.00,USD,Credit,Riley Sample,,Riley Sample - Coffee,4012345678901234573,

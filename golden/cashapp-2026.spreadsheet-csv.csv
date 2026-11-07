@@ -1,0 +1,7 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2026-01-10,,9.80,USD,Credit,,,Bitcoin Sell,,
+2026-01-15,,1250.00,USD,Credit,Taylor Example,,"Taylor Example - $1,250 Payment From Taylor Example",#D-123TESTCD,
+2026-01-18,,200.00,USD,Credit,,,Add Cash,,
+2026-01-20,,-5.00,USD,Debit,,,Bitcoin Buy,,
+2026-01-22,,-150.00,USD,Debit,,,Cash Out,306150405514408,
+2026-01-23,,-5.00,USD,Debit,Jamie Fakename,,Jamie Fakename - $5 Payment To Jamie Fakename,#D-824TESTAB,

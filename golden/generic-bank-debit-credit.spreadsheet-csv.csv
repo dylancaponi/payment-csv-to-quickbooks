@@ -1,0 +1,6 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-03-03,,2500.00,USD,Credit,,,OPENING DEPOSIT,,
+2025-03-14,,-125.40,USD,Debit,,,"OFFICE SUPPLIES, INV 77",,
+2025-03-15,,800.00,USD,Credit,,,CLIENT PAYMENT - ACME SAMPLE LLC,,
+2025-03-28,,-5.00,USD,Debit,,,MONTHLY SERVICE FEE,,
+2025-03-28,,-10.00,USD,Debit,,,12345,,

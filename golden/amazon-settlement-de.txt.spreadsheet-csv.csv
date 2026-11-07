@@ -1,0 +1,9 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2025-10-29,,29.99,EUR,Credit,,,Amazon settlement 90000000002: Product sales,90000000002:1,
+2025-10-29,,5.70,EUR,Credit,,,Amazon settlement 90000000002: Sales tax or VAT charged to buyers,90000000002:2,
+2025-10-29,,-4.50,EUR,Debit,,,"Amazon settlement 90000000002: Amazon selling fees (referral, refund admin, holdback)",90000000002:3,
+2025-10-29,,-3.10,EUR,Debit,,,Amazon settlement 90000000002: FBA fulfillment fees,90000000002:4,
+2025-10-29,,-0.14,EUR,Debit,,,Amazon settlement 90000000002: Digital services fee,90000000002:5,
+2025-10-29,,8.00,EUR,Credit,,,Amazon settlement 90000000002: Reserve released from the previous settlement,90000000002:6,
+2025-10-29,,-10.00,EUR,Debit,,,Amazon settlement 90000000002: Reserve held back by Amazon,90000000002:7,
+2025-10-29,,-25.95,EUR,Debit,,,Amazon settlement 90000000002: deposit,90000000002:deposit,

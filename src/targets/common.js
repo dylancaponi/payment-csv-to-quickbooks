@@ -8,6 +8,9 @@ import { isValidYMD } from '../dates.js';
 const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 const TYPES = new Set(['payment', 'refund', 'fee', 'transfer', 'payout', 'other']);
+// Kept in step with LINE_ACCOUNT_KEYS in journal.js (not imported from there
+// to avoid a cycle: journal.js imports this module).
+const JOURNAL_LINE_ACCOUNTS = new Set(['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable']);
 const MAX_CENTS = 99999999999; // 11 digits: QuickBooks rejects 12 or more
 
 function textField(v, i, name) {
@@ -49,6 +52,8 @@ export function normalizeTxns(transactions) {
     for (const k of ['id', 'counterparty', 'payoutId']) { const v = textField(t[k], i, k); if (v) out[k] = v; else delete out[k]; }
     if (t.transferAccount !== undefined && t.transferAccount !== null && t.transferAccount !== 'bank' && t.transferAccount !== 'card') fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has transferAccount "${String(t.transferAccount)}"; use "bank" or "card".`);
     if (t.refundSide !== undefined && t.refundSide !== null && t.refundSide !== 'sale' && t.refundSide !== 'purchase') fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has refundSide "${String(t.refundSide)}"; use "sale" or "purchase".`);
+    if (t.journalLine !== undefined && t.journalLine !== null && (typeof t.journalLine !== 'string' || !t.journalLine.trim() || t.journalLine.length > 200)) fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has a journalLine that is not a short text label.`);
+    if (t.journalAccount !== undefined && t.journalAccount !== null && !JOURNAL_LINE_ACCOUNTS.has(t.journalAccount)) fail('BAD_TXN', `Transaction ${i + 1} (${t.date}) has journalAccount "${String(t.journalAccount)}"; use one of: ${[...JOURNAL_LINE_ACCOUNTS].join(', ')}.`);
     if (t.payoutDate !== undefined && t.payoutDate !== null) {
       const pm = ISO.exec(typeof t.payoutDate === 'string' ? t.payoutDate : '');
       if (!pm || !isValidYMD(+pm[1], +pm[2], +pm[3])) fail('BAD_TXN', `Transaction ${i + 1} has an invalid payoutDate "${String(t.payoutDate)}".`);

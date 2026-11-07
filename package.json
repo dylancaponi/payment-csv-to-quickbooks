@@ -37,6 +37,9 @@
     "gumroad",
     "csv",
     "bank-statement",
-    "converter"
+    "converter",
+    "mt940",
+    "camt053",
+    "iso20022"
   ]
 }

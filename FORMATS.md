@@ -1145,3 +1145,114 @@ Enforce:
 - Journal numbers must not collide with existing ones if the duplicate-number warning is on.
 - <=1,000 lines per file; comma delimiter; one consistent date format (US MM/DD/YYYY).
 
+
+# Appendix D: Amazon settlement report (Flat File V2), added 2026-11-06
+
+Source id `amazon-settlement`, parser `src/sources/amazon.js`. Full research notes with every URL: `research/2026-11-06-amazon-settlement-format.md`. Real files studied (URLs only; nothing copied into the repo; fixtures are synthetic).
+
+Main sources:
+- SP-API report type values, settlement: https://developer-docs.amazon/sp-api/docs/report-type-values-settlement (GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2, tab-delimited, the 24 columns in order, "amounts are displayed in local currency formats (for example, 95,00 for EU instead of 95.00)").
+- Real 2024 settlement files from one seller, US/UK/DE/FR: https://raw.githubusercontent.com/guysolan/thetis/HEAD/services/amazon/supabase/functions/_shared/amazon/reports/09.10.2024/v2.txt (and the sibling folders 23.10.2024, 11.10.2024, 13.09.2024, 15.11.2024, 18.10.2024, 08.11.2024).
+- Real 2016 US file (23 columns, no promotion-id): https://raw.githubusercontent.com/hamik112/seller_center/HEAD/center/ALL_STATEMENTS_FILES/moonshare.txt
+
+## Rules the parser enforces (SOURCED)
+- Header (map by name): settlement-id, settlement-start-date, settlement-end-date, deposit-date, total-amount, currency, transaction-type, order-id, merchant-order-id, adjustment-id, shipment-id, marketplace-name, amount-type, amount-description, amount, fulfillment-id, posted-date, posted-date-time, order-item-code, merchant-order-item-id, merchant-adjustment-item-id, sku, quantity-purchased, promotion-id. Older files lack promotion-id (2016 file). Tab-delimited (SP-API page).
+- Summary row: the first data row fills only columns 1 to 6; every other row repeats settlement-id and leaves columns 2 to 6 empty (all seven 2024 files). The parser treats a row with total-amount filled and transaction-type empty as the summary.
+- total-amount = sum of every amount in the settlement, reserve rows included = the deposit (checked by summing in all seven 2024 files: 1977.17, 1668.68, 196.65, 128.84, 253.43, 346.60, 0.00). Mismatch = `WARNING:` line; deposit is still booked at total-amount and the gap goes to clearing.
+- Dates: US `2024-10-09 14:28:38 UTC`; UK, DE, FR `11.10.2024 08:59:52 UTC` (day first, dotted). Anything else is refused with the value in the message.
+- Decimal separator is independent of the date style: EUR files use a comma (`52,44`), US and UK files a point. No thousands separators seen. Not always padded (`-18.3`, 2016 US file). Read with resolveDecimal (no platform fallback: a genuinely ambiguous file asks).
+- Signs: order ItemPrice positive, ItemFees negative, ItemWithheldTax negative; refunds reverse them (Principal negative, Commission positive, RefundCommission negative, ItemWithheldTax positive). Promotion negative on orders, positive on refunds.
+- Reserves: `other-transaction / other-transaction / Previous Reserve Amount Balance` positive, `Current Reserve Amount` negative, chained across settlements (US 09.10 -1412.23 then 23.10 +1412.23).
+- Marketplace facilitator: `ItemPrice / Tax` offset by `ItemWithheldTax / MarketplaceFacilitatorTax-Principal` (US) or `MarketplaceFacilitatorVAT-Principal` (EU, UK, and seen on a US order); `-Shipping` variants for ShippingTax.
+
+## Named lines (each amount-description below was seen in a real file)
+| Amazon (amount-type / amount-description) | Line | Journal account |
+|---|---|---|
+| ItemPrice / Principal on Order | Product sales | sales |
+| ItemPrice / Shipping on Order | Shipping charged to buyers | sales |
+| ItemPrice / Principal, Shipping on Refund | Refunds: ... | refunds |
+| ItemPrice / Principal on Liquidations | FBA liquidation proceeds | sales |
+| ItemPrice / RestockingFee on Refund | Restocking fees kept from refunds | refunds |
+| ItemPrice / Tax, ShippingTax | Sales tax or VAT charged to buyers | taxes; taxesPayable (default "Sales Tax / VAT Payable") when the settlement's tax lines do not net to zero |
+| Promotion / TaxDiscount (Order or Refund) | Sales tax or VAT charged to buyers (it cancels tax on a promoted amount; real UK files 18.10.2024 and 15.11.2024) | as above |
+| ItemWithheldTax / MarketplaceFacilitator(Tax or VAT)-(Principal or Shipping) | Sales tax or VAT kept by Amazon | as above |
+| Promotion / any other description (Order or Refund) | Promotional rebates | sales |
+| ItemFees / Commission, RefundCommission, ShippingHB | Amazon selling fees | fees |
+| ItemFees / DigitalServicesFee | Digital services fee | fees |
+| ItemFees / FBAPerUnitFulfillmentFee, FBAWeightBasedFee, FBAPerOrderFulfillmentFee | FBA fulfillment fees | fulfillmentFees (default fees) |
+| ItemFees / ShippingChargeback | Shipping chargebacks | fulfillmentFees |
+| ItemFees / LiquidationsBrokerageFee | FBA liquidation fees | fulfillmentFees |
+| Cost of Advertising / TransactionTotalAmount | Advertising | advertising (default fees) |
+| other-transaction / Storage Fee | FBA storage fees | fulfillmentFees |
+| other-transaction / RemovalComplete, DisposalComplete | FBA removal and disposal fees | fulfillmentFees |
+| FBA Inventory Reimbursement / any | FBA inventory reimbursements | adjustmentsIncome |
+| other-transaction / Previous Reserve Amount Balance, Current Reserve Amount | Reserve released / held | reserve (default clearing) |
+
+## UNVERIFIED, refused or left to a warning
+- Not handled by name (kept on an "Other Amazon amounts: <type / amount-type / description>" line, booked to Uncategorized Income or Expense by sign, listed in a warning): anything not in the table, including values never seen in a real file (Subscription Fee, Chargeback, A-to-z Guarantee claims, GiftWrap, GiftWrapTax, VariableClosingFee, FixedClosingFee: deliberately not mapped, because we have no real V2 file showing them), plus `Payable to Amazon`, `Successful charge` and `ItemPrice / FBAFee` (seen in the 2016 file, meaning not established).
+- Whether one file can hold more than one settlement: UNVERIFIED (every real file had one). Handled anyway: one settlement per output, `options.account` picks it, `meta.accounts` feeds the site menu, the rest are named in a warning. A settlement whose summary row appears twice (the same report pasted twice) is refused.
+- Whether a file can lack the summary row: UNVERIFIED (the 2016 file did, likely trimmed). Refused: no total means no deposit check.
+- CRLF line endings and other encodings: UNVERIFIED (real files are ASCII with LF; one synthetic example has CRLF). The CSV reader handles both line endings.
+- Date formats for marketplaces other than US, UK, DE, FR (for example JP, IN, MX): UNVERIFIED; anything that is not YYYY-MM-DD or DD.MM.YYYY is refused with the value.
+- Currency: taken from the summary row; a detail row that names a different currency is refused. JPY amounts are integers in Amazon's terms; the engine still writes two decimals (same as every other source).
+- Amazon dates are UTC; every line is dated on the deposit date (the posted dates are not used), so the Amazon clearing account nets to zero per settlement.
+- V1 flat file (deprecated per the SP-API page): REFUSED by name, in detection and in parse, with a message that points to Reports > Payments > All Statements > Download Flat File V2. Signature: settlement-id and total-amount plus price-type or price-amount, and no amount-type column. The V1 column names are UNVERIFIED beyond those three names. The XML settlement report is not a tab file and gets the generic message.
+- Download path: Reports > Payments > All Statements > Download Flat File V2 (research F13, URLs there).
+- Date Range Reports "Transaction" CSV (header row starts `date/time, settlement id, type, order id`; 7 preamble lines; real US/CA/UK/AU files listed in the research notes): REFUSED by name in detection and in parse, because it has no deposit total per settlement to check against.
+- Bank-style targets for this source carry a notice (first warning) to import into a separate Amazon clearing account, not checking (review finding 5).
+- Tax the seller collected and Amazon did not withhold: when a settlement's tax lines do not net to zero, all its tax lines go to `accounts.taxesPayable` (default "Sales Tax / VAT Payable", or `accounts.taxes` when the caller set it), never to income by default (review finding 9). When they net to zero (full marketplace facilitator), they stay on the taxes account and cancel out.
+
+# Appendix E: eBay transaction report CSV, added 2026-11-06
+
+Source id `ebay`, parser `src/sources/ebay.js`. Full notes with every URL: `research/2026-11-06-ebay-transaction-report-format.md`. Fixture `fixtures/ebay-transaction-report.csv` is synthetic.
+
+Main sources:
+- Download path, field definitions (Gross before fees, Net after fees; Claim, Hold, Charge, Other fees): eBay help "Reconciling eBay sales transactions": https://www.ebay.com/help/selling/fees-credits-invoices/reconciling-ebay-sales-transactions?id=4847 (path fetched by the builder 2026-11-06: Seller Hub > Payments tab > Reports > Transaction report > choose type and dates > Create report) and https://www.ebay.ca/help/selling/fees-credits-invoices/reconciling-ebay-sales-transactions?id=4847
+- Real US 2026 reports: https://github.com/USAV-Solutions/USAV_ERP/blob/main/misc/SaleOrderReport_May_2026/Transaction_usav_May-20-2026.csv (and the _dragon_ and _mekong_ files beside it).
+- Real UK-site and DE-site reports: https://github.com/zbrdlowski/ScrubProduction/blob/main/docs/Payout_UK.csv and https://github.com/zbrdlowski/ScrubProduction/blob/main/docs/Payout_DE.csv
+- Column glossary incl. payout report columns: https://community.ebay.co.uk/t5/Announcements/Reconciling-your-eBay-Sales-Transactions/ba-p/7163037
+
+## Rules the parser enforces (SOURCED)
+- UTF-8 with BOM, a `--,--,...` first line and a notes block of 10 or 11 lines; the header is found by name (first cell "Transaction creation date"), never by position (US and UK files differ).
+- Empty cells are `--`. Amounts: no symbol, minus sign, comma thousands inside quotes (`"-1,076.42"`), trailing zeros dropped (`-0.4`, `66`).
+- Dates: `May 20, 2026` (US), `24 Sept 2026` (UK site). Other forms are left out with a WARNING.
+- Columns mapped by name with the UK aliases: Postage and packaging, `Final value fee – fixed/variable` (en dash), `Very high 'item not as described' fee`.
+- Signs: effect on the eBay balance. Orders positive with negative fee columns; refunds negative with fee credits positive; Payout rows negative; Charge positive; Hold negative when placed, positive when released.
+- Net amount is in the payout currency; gross and fees in the transaction currency (preamble note, and verified on a UK order: (259.9 - 0.4 - 29.89 - 4.16) x 0.85305 = 192.32 EUR). An order whose transaction currency differs from its payout currency is booked at Net only on its own line, with a warning. Amounts are never added across currencies; one payout listing two payout currencies is refused.
+- eBay collected tax is in neither gross nor net (verified: subtotal 66 + shipping 18.15 = gross 84.15, tax 5.89 separate). Not booked; the total is named in a note.
+- Multi-item orders: one order-level row with Net, Gross and tax; item rows (Net `--`) with subtotal, shipping and fees. Rows are grouped by Type + Order number; Net and Gross come from the rows with a Net, fees and shipping from the item rows when there are any. Net minus (Gross plus fees) that is not zero goes to an "Other amounts on orders and refunds" line with a warning (covers Charity donation, whose sign is not sourced).
+- Payout check: the Net of all rows with a Payout ID equals minus the Payout row's Net (82 of 88 real payouts; the other 6 were cut by the report's start date). Mismatch = `WARNING:` with the difference; the bank line stays at the Payout row amount, the gap goes to clearing. Rows of a payout whose Payout row is not in the file: WARNING, bank amount = sum of rows, unchecked. The Payout row's own Payout date is `--`; the payout date comes from the other rows.
+- Rows with no Payout ID are not paid out: left out, counted and totalled in a note.
+
+## Named lines
+| eBay | Line | Journal account |
+|---|---|---|
+| Order: Gross minus shipping | Item sales | sales |
+| Order: Shipping and handling / Postage and packaging | Shipping charged to buyers | sales |
+| Refund: Gross | Refunds to buyers | refunds |
+| Final Value Fee fixed + variable | eBay final value fees | fees |
+| Regulatory operating fee | eBay regulatory operating fee | fees |
+| Very high item not as described fee + Below standard performance fee | eBay performance fees | fees |
+| International fee | eBay international fee | fees |
+| Deposit processing fee | eBay deposit processing fee | fees |
+| Seller collected tax, only when Gross = subtotal + shipping + that tax | Sales tax or VAT you collected | taxesPayable ("Sales Tax / VAT Payable") |
+| Shipping label (UK: postage label) | Shipping labels bought on eBay | fulfillmentFees (default fees) |
+| Other fee, description has "Promoted" or "Ad fee" | Promoted listings and ad fees | advertising (default fees) |
+| Other fee, description has "Subscription" | eBay Store subscription | fees |
+| Other fee, anything else | Other eBay fees | fees |
+| Claim, Payment dispute | Claims and payment disputes | refunds |
+| Hold | Funds held by eBay | reserve (default clearing) |
+| Purchase | Purchases paid with eBay funds | payments sent |
+| Charge | money from your bank (or card, by its description) into eBay: a transfer, never income | bank / funding card |
+| Payout | the payout to the bank | bank |
+
+## UNVERIFIED, refused or left to a warning
+- Row Type strings never seen in a real file (Payment dispute, Transfer, Adjustment, Secondary payout, Withheld tax, Reserve, Credit) appear only lowercased in the preamble list. "Payment dispute" is mapped with claims on the strength of eBay's help definition; all others are kept on an "Other eBay amounts: <type>" line and listed in a warning.
+- Seller collected tax: always `--` in the real files, so whether it is inside Gross is unverified; it is moved to the payable account only when the row's own numbers show it inside Gross, otherwise it stays in sales.
+- Charity donation sign and inclusion: unverified; caught by the residual line.
+- Express payout fee: real files show it only in the Payout row's description (Net is the amount before the fee). Not booked; UNVERIFIED how the bank amount differs.
+- Charge to bank vs card is read from its description ("from Visa ending in ..." is a card); the CSV-to-API mapping (Charge = TRANSFER) is unverified.
+- The older 33-column layout (no tax, regulatory or Legacy order ID columns, from a user forum post) passes the header check because none of those columns are required; no real file of it was seen.
+- REFUSED by name: the German eBay.de report (German headers, semicolon, decimal comma; only one German type value is sourced) and the payout report (column names from eBay UK's glossary only: Payout date, Payout ID, Payout method, Payout type; no real file). The Orders report and the old PayPal-era sales report are NOT refused by name: no source for their headers was found, so they get the generic messages.
+- Bank-style targets for this source carry a first warning to import into a separate eBay clearing account.
+- Every line is dated on its payout date.
