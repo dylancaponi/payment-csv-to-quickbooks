@@ -1,0 +1,9 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20260318-1,03/18/2026,Sales of Product Income,,88.99,Product sales - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Sales of Product Income,,5.99,Shipping charged to buyers - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Bank Charges & Fees,12.75,,Walmart commission - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Sales of Product Income,,4.12,Sales tax charged to buyers - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Sales of Product Income,4.12,,Sales tax kept by Walmart (marketplace facilitator) - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Sales of Product Income,10.00,,Refunds: product - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Bank Charges & Fees,6.39,,Walmart shipping labels - Walmart payout 2026-03-01 to 2026-03-14,
+BI-20260318-1,03/18/2026,Checking,65.84,,Deposit - Walmart payout 2026-03-01 to 2026-03-14,

@@ -20,6 +20,7 @@ import * as camt from './src/sources/camt.js';
 import * as amazon from './src/sources/amazon.js';
 import * as ebay from './src/sources/ebay.js';
 import * as gusto from './src/sources/gusto.js';
+import * as walmart from './src/sources/walmart.js';
 import { writeOfx } from './src/targets/ofx.js';
 import { writeQboCsv, writeXeroCsv } from './src/targets/csvbank.js';
 import { writeSpreadsheetCsv } from './src/targets/spreadsheet.js';
@@ -49,6 +50,7 @@ const PARSERS = {
   'amazon-settlement': { detect: (rows) => amazon.detect(rows), parse: amazon.parse },
   ebay: { detect: (rows) => ebay.detect(rows), parse: ebay.parse },
   'gusto-payroll': { detect: (rows) => gusto.detect(rows), parse: gusto.parse },
+  'walmart-recon': { detect: (rows) => walmart.detect(rows), parse: walmart.parse },
   'generic-bank': { detect: (rows) => generic.detect(rows), parse: generic.parse },
 };
 
@@ -100,7 +102,7 @@ function rowsOf(text, options = {}) {
 // sales, Shopify orders and products): a plain "wrong export" message instead
 // of a bank-CSV guess.
 function wrongExportReason(rows) {
-  for (const f of [square.wrongExport, shopify.wrongExport, amazon.wrongExport, ebay.wrongExport, gusto.wrongExport]) {
+  for (const f of [square.wrongExport, shopify.wrongExport, amazon.wrongExport, ebay.wrongExport, gusto.wrongExport, walmart.wrongExport]) {
     let r = null;
     try { r = f(rows); } catch { r = null; }
     if (r) return r;
@@ -292,13 +294,21 @@ function writeImpl(targetId, transactions, options = {}) {
   // balance, not the bank (review finding 5). Not for the spreadsheet,
   // which is not imported anywhere.
   const bankStyle = targetId !== 'qbo-journal' && targetId !== 'spreadsheet-csv';
-  if (bankStyle && isEbayReport(transactions, options)) {
+  if (bankStyle && isWalmartRecon(transactions, options)) {
+    res.warnings.unshift('Import this file into a separate Walmart clearing account (a bank or other current asset account named for example "Walmart"), not your checking account. It lists the payout\'s sales, commission, labels and tax, and its last line moves the payout out to your bank, where it matches the deposit in your bank feed. Imported into checking, every sale and fee would land in the bank register and the payout would be counted twice.');
+  } else if (bankStyle && isEbayReport(transactions, options)) {
     res.warnings.unshift('Import this file into a separate eBay clearing account (a bank or other current asset account named for example "eBay"), not your checking account. It lists each payout\'s sales, fees, refunds and holds, and each payout\'s last line moves the money out to your bank, where it matches the deposit in your bank feed. Imported into checking, every sale and fee would land in the bank register and each payout would be counted twice.');
   } else if (bankStyle && isAmazonSettlement(transactions, options)) {
     res.warnings.unshift('Import this file into a separate Amazon clearing account (a bank or other current asset account named for example "Amazon"), not your checking account. It lists the settlement\'s sales, fees, tax and reserve, and its last line moves the deposit out to your bank, where it matches the deposit in your bank feed. Imported into checking, every sale and fee would land in the bank register and the deposit would be counted twice.');
   }
   res.warnings = dedupe(res.warnings);
   return res;
+}
+
+function isWalmartRecon(transactions, options) {
+  if (options.sourceId === 'walmart-recon') return true;
+  if (options.sourceId) return false;
+  return Array.isArray(transactions) && transactions.some((t) => t && t.raw && typeof t.raw === 'object' && Object.prototype.hasOwnProperty.call(t.raw, 'Walmart recon'));
 }
 
 function isEbayReport(transactions, options) {

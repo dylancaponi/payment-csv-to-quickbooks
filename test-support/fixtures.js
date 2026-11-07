@@ -42,6 +42,7 @@ export const CASES = [
   // The Oct 18 order has no Payout ID and is left out.
   { file: 'ebay-transaction-report.csv', source: 'ebay', count: 16, sumCents: 0 },
   { file: 'gusto-payroll-journal.csv', source: 'gusto-payroll', count: 10, sumCents: 0 },
+  { file: 'walmart-recon-report.csv', source: 'walmart-recon', count: 8, sumCents: 0 },
   { file: 'amazon-settlement-de.txt', source: 'amazon-settlement', count: 8, sumCents: 0, currency: 'EUR' },
   // Bank statements. Sums: Rabobank 300+300+600+300+600-4114-25.40+600 = -1439.40, which is also
   // closing 4003.49 - opening 5442.89 printed in the file. The ING sample does not reconcile in the

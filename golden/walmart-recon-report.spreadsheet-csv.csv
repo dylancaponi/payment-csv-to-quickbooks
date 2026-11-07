@@ -1,0 +1,9 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2026-03-18,,88.99,USD,Credit,,,Walmart payout 2026-03-01 to 2026-03-14: Product sales,2026-03-01 to 2026-03-14:1,
+2026-03-18,,5.99,USD,Credit,,,Walmart payout 2026-03-01 to 2026-03-14: Shipping charged to buyers,2026-03-01 to 2026-03-14:2,
+2026-03-18,,-12.75,USD,Debit,,,Walmart payout 2026-03-01 to 2026-03-14: Walmart commission,2026-03-01 to 2026-03-14:3,
+2026-03-18,,4.12,USD,Credit,,,Walmart payout 2026-03-01 to 2026-03-14: Sales tax charged to buyers,2026-03-01 to 2026-03-14:4,
+2026-03-18,,-4.12,USD,Debit,,,Walmart payout 2026-03-01 to 2026-03-14: Sales tax kept by Walmart (marketplace facilitator),2026-03-01 to 2026-03-14:5,
+2026-03-18,,-10.00,USD,Debit,,,Walmart payout 2026-03-01 to 2026-03-14: Refunds: product,2026-03-01 to 2026-03-14:6,
+2026-03-18,,-6.39,USD,Debit,,,Walmart payout 2026-03-01 to 2026-03-14: Walmart shipping labels,2026-03-01 to 2026-03-14:7,
+2026-03-18,,-65.84,USD,Debit,,,Walmart payout 2026-03-01 to 2026-03-14: deposit (Total Payable),2026-03-01 to 2026-03-14:payout,

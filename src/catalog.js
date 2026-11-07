@@ -276,6 +276,26 @@ export const SOURCES = [
     sampleHeader: 'Transaction creation date,Type,Order number,Legacy order ID,Buyer username,Buyer name,Ship to city,Ship to province/region/state,Ship to zip,Ship to country,Net amount,Payout currency,Payout date,Payout ID,Payout method,Payout status,Reason for hold,Item ID,Transaction ID,Item title,Custom label,Quantity,Item subtotal,Shipping and handling,Seller collected tax,eBay collected tax,Final Value Fee - fixed,Final Value Fee - variable,Regulatory operating fee,Very high "item not as described" fee,Below standard performance fee,International fee,Charity donation,Deposit processing fee,Gross transaction amount,Transaction currency,Exchange rate,Reference ID,Description',
   },
   {
+    id: 'walmart-recon',
+    name: 'Walmart Marketplace Recon report CSV',
+    vendor: 'Walmart Marketplace',
+    fileHint: 'Recon (reconciliation) report .csv for one payment period',
+    howToExport: [
+      'In Walmart Seller Center open Payments and find the payment period you want.',
+      'Download the reconciliation (recon) report for that period as CSV.',
+      'Upload that file here as downloaded, without opening and re-saving it in a spreadsheet.',
+    ],
+    quirks: [
+      'The first row after the header is a PaymentSummary row with the period dates, the currency and Total Payable (the payout); every other row is one part of an order line: Transaction Type (Sale, Refund, Adjustment), Amount Type (Product Price, Shipping, Commission on Product, Commission on Shipping, product and shipping tax and tax withheld, Fee/Reimbursement) and a signed Amount.',
+      'Every row is added up and compared with Total Payable. If they differ, you get a WARNING with the difference and the gap goes to the clearing account. We have not seen a complete real report, so the check itself is not yet confirmed on real data.',
+      'The report becomes named lines (product sales, shipping, refunds, Walmart commission, shipping labels, sales tax charged and kept by Walmart as marketplace facilitator) plus the payout, all dated on the PaymentSummary row\'s posted date.',
+      'Commission on a refund is positive (Walmart gives it back), so commission is read with its own sign, never forced negative.',
+      'Adjustment rows other than shipping label charges, and any Amount Type we have not seen, are kept on their own line and listed in a warning. One report and one payout per file; several PaymentSummary rows are refused. The JSON form of the report is refused by name: download the CSV.',
+      'Bank-style files (.qbo, .qfx, .ofx, QuickBooks Online CSV, Xero CSV) go into a separate Walmart clearing account, not your checking account: the last line moves the payout to your bank.',
+    ],
+    sampleHeader: 'Period Start Date,Period End Date,Total Payable,Currency,Transaction Key,Transaction Posted Timestamp,Transaction Type,Transaction Description,Customer Order #,Customer Order line #,Purchase Order #,Purchase Order line #,Amount,Amount Type,Ship Qty,Commission Rate,Transaction Reason Description,Partner Item Id,Partner GTIN,Partner Item Name,Product Tax Code,Ship to State,Ship to City,Ship to Zipcode,Contract Category,Product Type,Commission Rule,Shipping Method,Fulfillment Type',
+  },
+  {
     id: 'gusto-payroll',
     name: 'Gusto Payroll Journal Report CSV',
     vendor: 'Gusto',

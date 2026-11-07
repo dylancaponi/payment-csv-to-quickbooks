@@ -1291,3 +1291,31 @@ The lines are summed from the employee rows; the bank line is the report's own C
 - Several "Employee Earnings" blocks in one file: described by the real file's author, not seen by us. Each becomes its own entry.
 - Refused: the Payroll Journal layout with Job / Pay Type / Hours / Rate / Amount lines and no Gross Earnings column (only a synthetic replica is public). Not supported, with no sourced layout: ADP RUN and Workforce Now payroll register, Paychex Flex payroll journal, Paylocity, OnPay, Patriot, Square Payroll, QuickBooks Payroll.
 - Tax and benefit payments are not in the report and are not booked; the liabilities stay open until the user records each payment.
+
+# Appendix G: Walmart Marketplace Recon report CSV, added 2026-11-06 evening
+
+Source id `walmart-recon`. URLs in research/2026-11-06-marketplace-payout-formats.md. Fixture is synthetic.
+
+## Rules the parser enforces (SOURCED)
+- One header row with Period Start Date, Total Payable, Transaction Type, Amount Type and Amount (read by name).
+- Exactly one PaymentSummary row: Total Payable is the payout, Currency is read from it (empty on item rows), Period Start and End Date and Transaction Posted Timestamp are MM/DD/YYYY.
+- Amounts are signed as written: commission is negative on a sale and positive on a refund; tax withheld is the negative of the tax.
+
+## Named lines
+| Transaction Type / Amount Type | Line | Bucket |
+|---|---|---|
+| Sale / Product Price | Product sales | sales |
+| Sale / Shipping | Shipping charged to buyers | sales |
+| Refund / Product Price, Shipping | Refunds: product, Refunds: shipping | refunds |
+| Sale or Refund / Commission on Product, Commission on Shipping | Walmart commission | fees (both signs) |
+| Product tax, Shipping tax | Sales tax charged to buyers | taxes |
+| Product tax withheld, Shipping tax withheld | Sales tax kept by Walmart (marketplace facilitator) | taxes |
+| Adjustment / Fee/Reimbursement, description with "shipping label" | Walmart shipping labels | fees (fulfillmentFees account) |
+| anything else | Other Walmart amounts: type / amount type / description | adjustments, named in a warning |
+Net tax not zero: both tax lines go to taxesPayable, with a warning. The payout line is -Total Payable; rows minus Total Payable that is not zero is a WARNING and goes to clearing.
+
+## UNVERIFIED, refused or left to a warning
+- The rows adding up to Total Payable (only 100 of a real report's 325 rows are public).
+- Transaction Posted Timestamp of the PaymentSummary row as the deposit date.
+- Newer columns (Customer Promo Type, Original charge, Charge Savings, Campaign Id, Total Walmart Funded Savings Program) are not read.
+- Refused: no PaymentSummary row, several PaymentSummary rows, unreadable Total Payable or dates, the JSON form of the report (by name), missing columns.

@@ -1,0 +1,9 @@
+*Date,*Amount,Payee,Description,Reference,Check Number
+03/18/2026,88.99,,Walmart payout 2026-03-01 to 2026-03-14: Product sales,2026-03-01 to 2026-03-14:1,
+03/18/2026,5.99,,Walmart payout 2026-03-01 to 2026-03-14: Shipping charged to buyers,2026-03-01 to 2026-03-14:2,
+03/18/2026,-12.75,,Walmart payout 2026-03-01 to 2026-03-14: Walmart commission,2026-03-01 to 2026-03-14:3,
+03/18/2026,4.12,,Walmart payout 2026-03-01 to 2026-03-14: Sales tax charged to buyers,2026-03-01 to 2026-03-14:4,
+03/18/2026,-4.12,,Walmart payout 2026-03-01 to 2026-03-14: Sales tax kept by Walmart (marketplace facilitator),2026-03-01 to 2026-03-14:5,
+03/18/2026,-10.00,,Walmart payout 2026-03-01 to 2026-03-14: Refunds: product,2026-03-01 to 2026-03-14:6,
+03/18/2026,-6.39,,Walmart payout 2026-03-01 to 2026-03-14: Walmart shipping labels,2026-03-01 to 2026-03-14:7,
+03/18/2026,-65.84,,Walmart payout 2026-03-01 to 2026-03-14: deposit (Total Payable),2026-03-01 to 2026-03-14:payout,

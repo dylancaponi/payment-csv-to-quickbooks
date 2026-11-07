@@ -17,7 +17,7 @@ import { writeCSV } from '../csv.js';
 import { summarizePayouts, NO_PAYOUT_KEY } from '../payouts.js';
 import { validateTxns, asciiText, truncate, slug, csvSafe } from './common.js';
 
-const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'amazon-settlement': 'Amazon', ebay: 'eBay', 'gusto-payroll': 'Gusto', mt940: 'Bank', camt053: 'Bank', 'generic-bank': 'Bank' };
+const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'amazon-settlement': 'Amazon', ebay: 'eBay', 'gusto-payroll': 'Gusto', 'walmart-recon': 'Walmart', mt940: 'Bank', camt053: 'Bank', 'generic-bank': 'Bank' };
 
 export const DEFAULT_ACCOUNTS = {
   bank: 'Checking',
@@ -215,8 +215,16 @@ export function writeJournal(transactions, options = {}) {
       cur.push(...ls);
     }
     if (cur.length) parts.push(render(cur));
-    res.parts = parts.map((c, i) => ({ filename: res.filename.replace(/\.csv$/, `-part${i + 1}of${parts.length}.csv`), content: c }));
-    warnings.push(`QuickBooks imports at most ${QBO_JOURNAL_MAX_LINES} journal lines per file, so the entries are also provided as ${parts.length} files.`);
+    if (parts.length > 1) res.parts = parts.map((c, i) => ({ filename: res.filename.replace(/\.csv$/, `-part${i + 1}of${parts.length}.csv`), content: c }));
+    // An entry is never split; one entry over the limit gets its own WARNING
+    // (Walmart review finding 2).
+    const big = entries.filter((e) => e.lines.length > QBO_JOURNAL_MAX_LINES);
+    if (big.length) {
+      const what = big.length === 1 ? `journal entry ${big[0].no} has ${big[0].lines.length} lines` : `${big.length} journal entries have more than ${QBO_JOURNAL_MAX_LINES} lines each`;
+      const one = big.length === 1;
+      warnings.push(`WARNING: ${what}, more than the ${QBO_JOURNAL_MAX_LINES} lines QuickBooks imports from one file. An entry is never split across files, so QuickBooks will refuse ${one ? 'that file' : 'those files'}. Enter ${one ? 'that entry' : 'those entries'} by hand from the spreadsheet CSV, or combine lines in QuickBooks.`);
+    }
+    if (parts.length > 1) warnings.push(`QuickBooks imports at most ${QBO_JOURNAL_MAX_LINES} journal lines per file, so the entries are also provided as ${parts.length} files.`);
   }
   return res;
 }

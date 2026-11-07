@@ -179,3 +179,11 @@ All additive; existing golden files unchanged.
 - `write()` throws `NOT_SUPPORTED` for Gusto payroll transactions with targets `qbo`, `qfx`, `ofx`, `qbo-csv-3`, `qbo-csv-4`, `xero-csv` (a payroll report is not a bank statement). `spreadsheet-csv` and `qbo-journal` work.
 - Refusals: `WRONG_SOURCE` for the Gusto Payroll Journal layout with Job and Pay Type columns and no Gross Earnings (also in `detectSource`); `BAD_FILE` for a block without a Pay day line, without a Payroll Totals row, with an unreadable amount, or the same payroll twice; `MISSING_COLUMNS` when the Gusto columns are not there.
 - `parse()` no longer drops repeated header rows for `gusto-payroll` (the report repeats its header once per pay schedule on purpose).
+
+## Walmart Recon report source (2026-11-06 evening)
+
+All additive; existing golden files unchanged.
+- New source id `walmart-recon` (Walmart Marketplace Recon report CSV, v1). See FORMATS.md Appendix G. One report = one payout: named lines (Txn `journalLine`, `journalAccount`) plus the payout of Total Payable; payoutId = `<period start> to <period end>`; date = the PaymentSummary row's Transaction Posted Timestamp (period end if missing).
+- `meta`: `periodStart`, `periodEnd`, `depositDate`, `depositTotal`, `rowsTotal`, `reconciled`.
+- Refusals: `WRONG_SOURCE` for the JSON form (also in `detectSource`); `BAD_FILE` for no PaymentSummary row, several PaymentSummary rows, unreadable Total Payable, currency or dates; `MISSING_COLUMNS`.
+- `write()` to non-journal targets adds a first warning for Walmart (sourceId `walmart-recon`, or a `Walmart recon` key in `raw`) to import into a separate Walmart clearing account.
