@@ -1,0 +1,11 @@
+﻿Date,Value date,Amount,Currency,Debit/Credit,Counterparty,Counterparty account,Description,Reference,Balance
+2026-03-13,,-1300.00,USD,Debit,,,Gusto payroll pay day 2026-03-13 (Weekly Payroll): Gross wages (Gross Earnings),2026-03-13 Weekly Payroll:1,
+2026-03-13,,-115.25,USD,Debit,,,Gusto payroll pay day 2026-03-13 (Weekly Payroll): Employer payroll taxes (expense),2026-03-13 Weekly Payroll:2,
+2026-03-13,,251.95,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Weekly Payroll): Employee taxes withheld (owed to tax agencies),2026-03-13 Weekly Payroll:3,
+2026-03-13,,115.25,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Weekly Payroll): Employer payroll taxes owed,2026-03-13 Weekly Payroll:4,
+2026-03-13,,1048.05,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Weekly Payroll): net pay paid (Check Amount total),2026-03-13 Weekly Payroll:check-amount,
+2026-03-13,,-2000.00,USD,Debit,,,Gusto payroll pay day 2026-03-13 (Biweekly Payroll): Gross wages (Gross Earnings),2026-03-13 Biweekly Payroll:1,
+2026-03-13,,-173.00,USD,Debit,,,Gusto payroll pay day 2026-03-13 (Biweekly Payroll): Employer payroll taxes (expense),2026-03-13 Biweekly Payroll:2,
+2026-03-13,,463.00,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Biweekly Payroll): Employee taxes withheld (owed to tax agencies),2026-03-13 Biweekly Payroll:3,
+2026-03-13,,173.00,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Biweekly Payroll): Employer payroll taxes owed,2026-03-13 Biweekly Payroll:4,
+2026-03-13,,1537.00,USD,Credit,,,Gusto payroll pay day 2026-03-13 (Biweekly Payroll): net pay paid (Check Amount total),2026-03-13 Biweekly Payroll:check-amount,

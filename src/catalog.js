@@ -276,6 +276,26 @@ export const SOURCES = [
     sampleHeader: 'Transaction creation date,Type,Order number,Legacy order ID,Buyer username,Buyer name,Ship to city,Ship to province/region/state,Ship to zip,Ship to country,Net amount,Payout currency,Payout date,Payout ID,Payout method,Payout status,Reason for hold,Item ID,Transaction ID,Item title,Custom label,Quantity,Item subtotal,Shipping and handling,Seller collected tax,eBay collected tax,Final Value Fee - fixed,Final Value Fee - variable,Regulatory operating fee,Very high "item not as described" fee,Below standard performance fee,International fee,Charity donation,Deposit processing fee,Gross transaction amount,Transaction currency,Exchange rate,Reference ID,Description',
   },
   {
+    id: 'gusto-payroll',
+    name: 'Gusto Payroll Journal Report CSV',
+    vendor: 'Gusto',
+    fileHint: 'Payroll journal report .csv from Gusto Reports',
+    howToExport: [
+      'In Gusto open Reports and choose the Payroll journal report.',
+      'Pick the payrolls or dates you want, keep the layout with one row per employee, and download it as CSV.',
+      'Upload that file here as downloaded, without opening and re-saving it in a spreadsheet. It never leaves your browser.',
+    ],
+    quirks: [
+      'A few lines with the report title and your company name and address come first, then an "Employee Earnings" block per pay schedule: a payroll period line, a Pay day line, the column header, one row per employee and a "Payroll Totals" row.',
+      'Each payroll becomes one journal entry dated on its pay day: gross wages and employer taxes as expenses, employee taxes withheld and employer taxes owed as liabilities, and the Check Amount total (net pay) out of the bank.',
+      'The employee rows are added up and compared with the Payroll Totals row, and the lines are compared with the Check Amount total. A mismatch against those totals gives a WARNING with the difference, and the gap goes to the clearing account. Deductions and benefits are worked out, not read, so check them the first time.',
+      'Deduction and benefit columns are not read by name (their names in the CSV are not documented): employee deductions are worked out as Gross Earnings minus Employee Taxes minus Net Pay, employer contributions as Employer Cost minus Gross Earnings minus Employer Taxes, and a note says so.',
+      'Tax and benefit payments are not in this report, so they stay as liabilities until you record each payment from your bank.',
+      'The Payroll journal layout with one line per job and pay type (Job, Pay Type columns, no Gross Earnings) is refused by name. Bank files (.qbo, .qfx, .ofx, bank CSVs) are not offered: a payroll report is not a bank statement.',
+    ],
+    sampleHeader: '"Last Name","First Name","Work Address","Employee Type","Payment","Regular (Hours)","Regular (Rate)","Regular (Amount)","Additional Earnings","Gross Earnings","Employee Taxes","Federal Income Tax (Employee)","Social Security (Employee)","Medicare (Employee)","Additional Medicare (Employee)","NC State Tax (Employee)","Employer Taxes","Social Security (Employer)","Medicare (Employer)","FUTA (Employer)","NC Unemployment Tax (Employer)","Net Pay","Reimbursements","Donations","Check Amount","Employer Cost"',
+  },
+  {
     id: 'wise',
     name: 'Wise balance statement CSV',
     vendor: 'Wise',

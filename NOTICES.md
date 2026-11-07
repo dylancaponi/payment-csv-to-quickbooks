@@ -29,6 +29,7 @@ Every other fixture in `fixtures/` was written for this repository with invented
 
 - Built on a published layout: `mt940-abnamro.sta` follows the structure of the ABN AMRO free-text MT940 test file in the WoLpH repository (tags, field layouts and description style), with all values invented and balances that add up. `camt053-multi.xml` and `camt053-v08.xml` follow the ING camt.053 sample layout and ISO 20022 element names.
 - Built on the provider's own documentation or on header rows seen in public projects: the CSV fixtures for Venmo, Cash App, PayPal, Stripe, Square, Shopify, Wise, Etsy, Airbnb, Gumroad and generic bank files.
+- Built on a header layout published in another project's documentation: `gusto-payroll-journal.csv` is synthetic, with invented names and amounts, on the column layout described in https://github.com/mc30ski/seedlings3/blob/main/docs/features/payroll.md (format reference only; no data from that file is used).
 - Built from documentation and field-by-field format notes: `amazon-settlement-*.txt` and `ebay-transaction-report.csv`. No real settlement or transaction report is included.
 
 No fixture contains a real person's or business's transactions.

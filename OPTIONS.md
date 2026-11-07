@@ -167,3 +167,15 @@ All additive; existing golden files unchanged.
 - Refusals: `WRONG_SOURCE` for the German eBay.de report and the eBay payout report (also in `detectSource`); `BAD_FILE` for a payout with two payout currencies or two Payout rows.
 - `write()` to non-journal targets adds a first warning for eBay (sourceId `ebay`, or rows built by this parser) to import into a separate eBay clearing account.
 - The generic "couldn't recognize" message now lists Amazon and eBay.
+
+## Gusto payroll journal source (2026-11-06 evening)
+
+All additive; existing golden files unchanged.
+- New source id `gusto-payroll` (Gusto Payroll Journal Report CSV, flat layout with one row per employee). See FORMATS.md Appendix F. Each "Employee Earnings" block (one per pay schedule) becomes named lines plus a payout of the block's Payroll Totals Check Amount; payoutId = `<pay day> <schedule>` (for example `2026-03-13 Weekly Payroll`), date = pay day. Several payrolls per file, one journal entry each.
+- Txn signs follow the existing contract with the "balance" being a payroll clearing view: expenses negative (debit), liabilities positive (credit), the payout positive (money in from the bank, credited to the bank account in the journal).
+- `meta`: `payrolls` (number of blocks), `employeeRows`, `payrollChecks` (`[{ key, payDay, checkAmount, reconciled }]`, reconciled = employee rows equal Payroll Totals in every money column read and the lines equal the Check Amount total), `reconciled` (all payrolls reconciled).
+- New journal `accounts` keys, also accepted as `journalAccount`: `wages` (default `Payroll Expenses:Wages`), `payrollTaxExpense` (`Payroll Expenses:Taxes`), `benefitsExpense` (`Payroll Expenses:Benefits`), `reimbursements` (`Employee Reimbursements`), `payrollTaxesPayable` (`Payroll Liabilities:Taxes`), `payrollDeductions` (`Payroll Liabilities:Deductions`). Only Gusto payroll lines use them, so other sources' output is unchanged.
+- Journal wording for payroll (sourceId `gusto-payroll`, or a `Gusto payroll` key in `raw`): entry description "Gusto payroll <key>", bank line "Net pay paid to employees (Check Amount)", clearing line "Gap between the payroll lines and the Check Amount total", and a payroll version of the "do not add up" note.
+- `write()` throws `NOT_SUPPORTED` for Gusto payroll transactions with targets `qbo`, `qfx`, `ofx`, `qbo-csv-3`, `qbo-csv-4`, `xero-csv` (a payroll report is not a bank statement). `spreadsheet-csv` and `qbo-journal` work.
+- Refusals: `WRONG_SOURCE` for the Gusto Payroll Journal layout with Job and Pay Type columns and no Gross Earnings (also in `detectSource`); `BAD_FILE` for a block without a Pay day line, without a Payroll Totals row, with an unreadable amount, or the same payroll twice; `MISSING_COLUMNS` when the Gusto columns are not there.
+- `parse()` no longer drops repeated header rows for `gusto-payroll` (the report repeats its header once per pay schedule on purpose).

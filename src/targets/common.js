@@ -10,7 +10,7 @@ const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 const TYPES = new Set(['payment', 'refund', 'fee', 'transfer', 'payout', 'other']);
 // Kept in step with LINE_ACCOUNT_KEYS in journal.js (not imported from there
 // to avoid a cycle: journal.js imports this module).
-const JOURNAL_LINE_ACCOUNTS = new Set(['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable']);
+const JOURNAL_LINE_ACCOUNTS = new Set(['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable', 'wages', 'payrollTaxExpense', 'benefitsExpense', 'reimbursements', 'payrollTaxesPayable', 'payrollDeductions']);
 const MAX_CENTS = 99999999999; // 11 digits: QuickBooks rejects 12 or more
 
 function textField(v, i, name) {

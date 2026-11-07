@@ -1,0 +1,20 @@
+"Payroll Journal Report"
+
+"Sample Bakery LLC"
+"100 Example Ave"
+"Durham","NC","27701"
+
+"Employee Earnings"
+"Weekly Payroll payroll period"," 03/02/2026 - 03/08/2026"
+"Pay day"," 03/13/2026"
+"Last Name","First Name","Work Address","Employee Type","Payment","Regular (Hours)","Regular (Rate)","Regular (Amount)","Additional Earnings","Gross Earnings","Employee Taxes","Federal Income Tax (Employee)","Social Security (Employee)","Medicare (Employee)","Additional Medicare (Employee)","NC State Tax (Employee)","Employer Taxes","Social Security (Employer)","Medicare (Employer)","FUTA (Employer)","NC Unemployment Tax (Employer)","Net Pay","Reimbursements","Donations","Check Amount","Employer Cost"
+"Example","Ana","100 Example Ave, Durham, NC 27701","Paid by the hour","Direct Deposit","40.00","20.00","800.00","0.00","800.00","161.20","64.00","49.60","11.60","0.00","36.00","74.00","49.60","11.60","4.80","8.00","638.80","0.00","0.00","638.80","874.00"
+"Sample","Ben","100 Example Ave, Durham, NC 27701","Paid by the hour","Check","25.50","18.00","459.00","41.00","500.00","90.75","30.00","31.00","7.25","0.00","22.50","41.25","31.00","7.25","3.00","","409.25","0.00","0.00","409.25","541.25"
+"Payroll Totals","","","","","65.50","","1259.00","41.00","1300.00","251.95","94.00","80.60","18.85","0.00","58.50","115.25","80.60","18.85","7.80","8.00","1048.05","0.00","0.00","1048.05","1415.25"
+
+"Employee Earnings"
+"Biweekly Payroll payroll period"," 02/23/2026 - 03/08/2026"
+"Pay day"," 03/13/2026"
+"Last Name","First Name","Work Address","Employee Type","Payment","Regular (Hours)","Regular (Rate)","Regular (Amount)","Additional Earnings","Gross Earnings","Employee Taxes","Federal Income Tax (Employee)","Social Security (Employee)","Medicare (Employee)","Additional Medicare (Employee)","NC State Tax (Employee)","Employer Taxes","Social Security (Employer)","Medicare (Employer)","FUTA (Employer)","NC Unemployment Tax (Employer)","Net Pay","Reimbursements","Donations","Check Amount","Employer Cost"
+"Testcase","Cleo","100 Example Ave, Durham, NC 27701","Paid by the hour","Direct Deposit","80.00","25.00","2000.00","0.00","2000.00","463.00","220.00","124.00","29.00","0.00","90.00","173.00","124.00","29.00","","20.00","1537.00","0.00","0.00","1537.00","2173.00"
+"Payroll Totals","","","","","80.00","25.00","2000.00","0.00","2000.00","463.00","220.00","124.00","29.00","0.00","90.00","173.00","124.00","29.00","","20.00","1537.00","0.00","0.00","1537.00","2173.00"

@@ -41,6 +41,7 @@ export const CASES = [
   // 69.93 + 74.80 - 26.20 - 8.25 - 4.10 - 4.95 - 20.00 = 81.23; 6000000002: 1039.40 + 20.00 - 15.00 = 1044.40.
   // The Oct 18 order has no Payout ID and is left out.
   { file: 'ebay-transaction-report.csv', source: 'ebay', count: 16, sumCents: 0 },
+  { file: 'gusto-payroll-journal.csv', source: 'gusto-payroll', count: 10, sumCents: 0 },
   { file: 'amazon-settlement-de.txt', source: 'amazon-settlement', count: 8, sumCents: 0, currency: 'EUR' },
   // Bank statements. Sums: Rabobank 300+300+600+300+600-4114-25.40+600 = -1439.40, which is also
   // closing 4003.49 - opening 5442.89 printed in the file. The ING sample does not reconcile in the
@@ -60,7 +61,7 @@ export const CASES = [
 ];
 
 // Source and target pairs the engine refuses on purpose (plain EngineError).
-export const UNSUPPORTED = new Set(['wise>qbo-journal', 'mt940>qbo-journal', 'camt053>qbo-journal']);
+export const UNSUPPORTED = new Set(['wise>qbo-journal', 'mt940>qbo-journal', 'camt053>qbo-journal', ...['qbo', 'qfx', 'ofx', 'qbo-csv-3', 'qbo-csv-4', 'xero-csv'].map((t) => `gusto-payroll>${t}`)]);
 
 export const TARGET_IDS = ['qbo', 'qfx', 'ofx', 'qbo-csv-3', 'qbo-csv-4', 'xero-csv', 'spreadsheet-csv', 'qbo-journal'];
 

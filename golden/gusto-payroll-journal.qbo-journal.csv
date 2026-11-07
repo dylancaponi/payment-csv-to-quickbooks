@@ -1,0 +1,11 @@
+Journal No.,Journal Date,Account Name,Debits,Credits,Description,Name
+BI-20260313-1,03/13/2026,Payroll Expenses:Wages,2000.00,,Gross wages (Gross Earnings) - Gusto payroll 2026-03-13 Biweekly Payroll,
+BI-20260313-1,03/13/2026,Payroll Expenses:Taxes,173.00,,Employer payroll taxes (expense) - Gusto payroll 2026-03-13 Biweekly Payroll,
+BI-20260313-1,03/13/2026,Payroll Liabilities:Taxes,,463.00,Employee taxes withheld (owed to tax agencies) - Gusto payroll 2026-03-13 Biweekly Payroll,
+BI-20260313-1,03/13/2026,Payroll Liabilities:Taxes,,173.00,Employer payroll taxes owed - Gusto payroll 2026-03-13 Biweekly Payroll,
+BI-20260313-1,03/13/2026,Checking,,1537.00,Net pay paid to employees (Check Amount) - Gusto payroll 2026-03-13 Biweekly Payroll,
+BI-20260313-2,03/13/2026,Payroll Expenses:Wages,1300.00,,Gross wages (Gross Earnings) - Gusto payroll 2026-03-13 Weekly Payroll,
+BI-20260313-2,03/13/2026,Payroll Expenses:Taxes,115.25,,Employer payroll taxes (expense) - Gusto payroll 2026-03-13 Weekly Payroll,
+BI-20260313-2,03/13/2026,Payroll Liabilities:Taxes,,251.95,Employee taxes withheld (owed to tax agencies) - Gusto payroll 2026-03-13 Weekly Payroll,
+BI-20260313-2,03/13/2026,Payroll Liabilities:Taxes,,115.25,Employer payroll taxes owed - Gusto payroll 2026-03-13 Weekly Payroll,
+BI-20260313-2,03/13/2026,Checking,,1048.05,Net pay paid to employees (Check Amount) - Gusto payroll 2026-03-13 Weekly Payroll,

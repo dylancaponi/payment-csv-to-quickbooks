@@ -17,7 +17,7 @@ import { writeCSV } from '../csv.js';
 import { summarizePayouts, NO_PAYOUT_KEY } from '../payouts.js';
 import { validateTxns, asciiText, truncate, slug, csvSafe } from './common.js';
 
-const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'amazon-settlement': 'Amazon', ebay: 'eBay', mt940: 'Bank', camt053: 'Bank', 'generic-bank': 'Bank' };
+const VENDOR = { venmo: 'Venmo', cashapp: 'Cash App', paypal: 'PayPal', 'stripe-balance': 'Stripe', 'stripe-payouts': 'Stripe', etsy: 'Etsy', airbnb: 'Airbnb', gumroad: 'Gumroad', square: 'Square', 'shopify-transactions': 'Shopify', 'shopify-payouts': 'Shopify', wise: 'Wise', 'amazon-settlement': 'Amazon', ebay: 'eBay', 'gusto-payroll': 'Gusto', mt940: 'Bank', camt053: 'Bank', 'generic-bank': 'Bank' };
 
 export const DEFAULT_ACCOUNTS = {
   bank: 'Checking',
@@ -43,10 +43,20 @@ export const DEFAULT_ACCOUNTS = {
   // seller. null = "Sales Tax / VAT Payable", or the taxes account when
   // the caller set one.
   taxesPayable: null,
+  // Payroll lines (Gusto Payroll Journal Report). Expenses: wages,
+  // payrollTaxExpense, benefitsExpense, reimbursements. Liabilities:
+  // payrollTaxesPayable (employee taxes withheld and employer taxes owed),
+  // payrollDeductions (employee deductions and employer contributions owed).
+  wages: 'Payroll Expenses:Wages',
+  payrollTaxExpense: 'Payroll Expenses:Taxes',
+  benefitsExpense: 'Payroll Expenses:Benefits',
+  reimbursements: 'Employee Reimbursements',
+  payrollTaxesPayable: 'Payroll Liabilities:Taxes',
+  payrollDeductions: 'Payroll Liabilities:Deductions',
 };
 
 // Account keys a transaction may name in Txn.journalAccount.
-export const LINE_ACCOUNT_KEYS = ['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable'];
+export const LINE_ACCOUNT_KEYS = ['sales', 'refunds', 'fees', 'taxes', 'clearing', 'adjustmentsIncome', 'adjustmentsExpense', 'advertising', 'fulfillmentFees', 'reserve', 'taxesPayable', 'wages', 'payrollTaxExpense', 'benefitsExpense', 'reimbursements', 'payrollTaxesPayable', 'payrollDeductions'];
 
 const ACCOUNT_KEYS = Object.keys(DEFAULT_ACCOUNTS);
 
@@ -76,7 +86,8 @@ export function journalLines(rows, options = {}) {
     const n = (used.get(base) || 0) + 1;
     used.set(base, n);
     const no = `${base}-${n}`.slice(0, 21);
-    const what = r.groupBy === 'month' ? `${label} activity ${r.key}` : r.key === NO_PAYOUT_KEY ? `${label} activity not yet paid out` : `${label} payout ${r.key}`;
+    const payroll = !!options._payroll;
+    const what = payroll ? (r.groupBy === 'month' ? `${label} payrolls ${r.key}` : `${label} payroll ${r.key}`) : r.groupBy === 'month' ? `${label} activity ${r.key}` : r.key === NO_PAYOUT_KEY ? `${label} activity not yet paid out` : `${label} payout ${r.key}`;
     const lines = [];
     // Signed: positive = credit, negative = debit (from the platform balance's view).
     const add = (account, cents, desc) => {
@@ -111,7 +122,7 @@ export function journalLines(rows, options = {}) {
     // Assets (bank, clearing) are debited when they grow: negate.
     // A negative settlement total (named-line sources only, so other
     // sources keep their exact text) is a charge, not a deposit.
-    add(acct.bank, -payout, payout < 0 && details.length ? `Charged by ${label}` : 'Deposit');
+    add(acct.bank, -payout, payroll ? 'Net pay paid to employees (Check Amount)' : payout < 0 && details.length ? `Charged by ${label}` : 'Deposit');
     // Own-money transfers: bank against the platform clearing account.
     if (toBank) {
       add(acct.transfers, -toBank, `Transfer from ${label} to bank`);
@@ -133,13 +144,18 @@ export function journalLines(rows, options = {}) {
       add(acct.fundingCard, fromCard, `Funded by card or other source into ${label}`);
     }
     const diff = toCents(r.difference) + toBank - fromBank + toCard - fromCard; // clearing change from activity and payouts
-    add(acct.clearing, -diff, diff > 0 ? `Kept in ${label} balance` : r.key === NO_PAYOUT_KEY ? `Taken from ${label} balance` : `Paid from earlier ${label} balance`);
+    add(acct.clearing, -diff, payroll ? 'Gap between the payroll lines and the Check Amount total' : diff > 0 ? `Kept in ${label} balance` : r.key === NO_PAYOUT_KEY ? `Taken from ${label} balance` : `Paid from earlier ${label} balance`);
     let dr = 0; let cr = 0;
     for (const l of lines) { dr += l.debit; cr += l.credit; }
     if (dr !== cr) fail('UNBALANCED', `Internal check failed: entry ${no} does not balance (${formatCents(dr)} vs ${formatCents(cr)}). Please report this file.`);
     if (lines.length) entries.push({ no, date: r.date, lines, currency: r.currency });
   }
   return entries;
+}
+
+// Gusto payroll journal transactions (source id or the raw marker).
+export function isPayroll(transactions, options = {}) {
+  return options.sourceId === 'gusto-payroll' || transactions.some((t) => t && t.raw && Object.prototype.hasOwnProperty.call(t.raw, 'Gusto payroll'));
 }
 
 export function writeJournal(transactions, options = {}) {
@@ -157,6 +173,7 @@ export function writeJournal(transactions, options = {}) {
   if (options.sourceId === 'mt940' || options.sourceId === 'camt053' || transactions.some((t) => t.raw && (Object.prototype.hasOwnProperty.call(t.raw, 'MT940 :61:') || Object.prototype.hasOwnProperty.call(t.raw, 'camt.053 entry')))) {
     fail('NOT_SUPPORTED', 'Journal entries are not available for bank statements (MT940 or camt.053): a statement does not say which money coming in is sales and which is a transfer, a loan or a refund, so the entries would be wrong. Choose a bank file instead (QuickBooks .qbo, QuickBooks Online CSV, Xero CSV, OFX or a spreadsheet CSV) and categorize each transaction in your accounting software.');
   }
+  const payroll = isPayroll(transactions, options);
   const groupBy = options.groupBy || (transactions.some((t) => t.payoutId) ? 'payout' : 'month');
   let rows = summarizePayouts(transactions, { groupBy });
   if (options.currency !== undefined && options.currency !== null && !/^[A-Za-z]{3}$/.test(String(options.currency))) fail('BAD_OPTION', 'The currency option must be a 3-letter code such as USD.');
@@ -168,7 +185,7 @@ export function writeJournal(transactions, options = {}) {
   rows = rows.filter((r) => r.currency === chosen);
   if (dropped) warnings.push(`Left out ${dropped} entr(ies) in other currencies: one journal file is written per currency, and this one is ${chosen}.`);
   if (rows.some((r) => r.mixedCurrencyPayout)) warnings.push('Some payouts contain transactions in more than one currency. Only the main currency counts toward the bank deposit; the other currency\'s part is booked to the clearing account. Check those payouts in your platform.');
-  const entries = journalLines(rows, options);
+  const entries = journalLines(rows, { ...options, _payroll: payroll });
   const fmt = options.dateFormat || 'MM/DD/YYYY';
   if (!DATE_FORMATS.includes(fmt)) fail('BAD_OPTION', `Unsupported date format "${String(fmt)}". Use one of: ${DATE_FORMATS.join(', ')}.`);
   if (options.includeFeesAsSeparateRows) warnings.push('includeFeesAsSeparateRows does not apply to journal entries (fees always get their own line) and was ignored.');
@@ -180,7 +197,8 @@ export function writeJournal(transactions, options = {}) {
   const pending = rows.find((r) => r.key === NO_PAYOUT_KEY);
   if (pending) warnings.push(`Some transactions are not part of any payout yet; they are booked to "${(options.accounts && options.accounts.clearing) || DEFAULT_ACCOUNTS.clearing}" until they are paid out.`);
   const offs = rows.filter((r) => r.hasPayoutRow && r.difference !== 0 && r.groupBy === 'payout');
-  if (offs.length) warnings.push(`${offs.length} payout(s) do not equal the activity listed with them; the difference is booked to the clearing account so each entry still balances. Check those payouts.`);
+  if (offs.length && payroll) warnings.push(`${offs.length} payroll(s) do not add up to the report's Check Amount total; the difference is booked to the clearing account so each entry still balances. Check those payrolls.`);
+  else if (offs.length) warnings.push(`${offs.length} payout(s) do not equal the activity listed with them; the difference is booked to the clearing account so each entry still balances. Check those payouts.`);
   if (rows.some((r) => r.fundingToCard || r.fundingFromCard)) warnings.push(`Some payments were funded by (or paid to) a card or another source that is not recognisably your bank. They are booked to "${(options.accounts && options.accounts.fundingCard) || DEFAULT_ACCOUNTS.fundingCard}", not your bank account. Point that at the right credit card account in the options.`);
   if (rows.some((r) => r.paymentsSent)) warnings.push(`Money you sent to other people is booked to "${(options.accounts && options.accounts.paymentsSent) || DEFAULT_ACCOUNTS.paymentsSent}", not deducted from sales. Recategorize it in QuickBooks, or set the account name in the options.`);
   if (rows.some((r) => r.tipsCollected)) warnings.push(`Tips collected with sales are booked to "${(options.accounts && options.accounts.tips) || DEFAULT_ACCOUNTS.tips}", not to sales, because they are owed to staff. Point that at your tips or payroll liability account in the options.`);

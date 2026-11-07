@@ -1256,3 +1256,38 @@ Main sources:
 - REFUSED by name: the German eBay.de report (German headers, semicolon, decimal comma; only one German type value is sourced) and the payout report (column names from eBay UK's glossary only: Payout date, Payout ID, Payout method, Payout type; no real file). The Orders report and the old PayPal-era sales report are NOT refused by name: no source for their headers was found, so they get the generic messages.
 - Bank-style targets for this source carry a first warning to import into a separate eBay clearing account.
 - Every line is dated on its payout date.
+
+# Appendix F: Gusto Payroll Journal Report CSV, added 2026-11-06 evening
+
+Source id `gusto-payroll`. Every URL is in research/2026-11-06-payroll-report-formats.md. The layout comes from one real export quoted, with its file, in a public repo (seedlings3: docs/features/payroll.md and apps/api/src/services/__fixtures__/gusto-payroll-journal.csv), and the column set is backed by Gusto's API documentation for the payroll_journal report (gross_earnings, employee_taxes, employer_taxes, employee_deductions, employer_benefit_contributions, net_pay, check_amount, employer_cost). Our fixture is synthetic.
+
+## Rules the parser enforces (SOURCED)
+- Preamble ("Payroll Journal Report", company name, address) is skipped. A block is: an "Employee Earnings" line, a "<Schedule> payroll period" line with " MM/DD/YYYY - MM/DD/YYYY", a "Pay day" line with " MM/DD/YYYY", the header row, one row per employee, a "Payroll Totals" row.
+- Columns read by name: Gross Earnings, Employee Taxes, Employer Taxes, Net Pay, Reimbursements, Donations, Check Amount, Employer Cost, and every column ending "(Employee)" or "(Employer)" (state columns carry the state, for example "NC State Tax (Employee)", so they are matched by that ending). Names, addresses, employee type, payment method, hours and rates are never copied.
+- Blank cells are "not applicable" and count as 0 in sums; "0.00" is zero.
+- The Payroll Totals row equals the sum of the employee rows in every money column. Checked per column; a mismatch is a WARNING naming the column.
+- Employee Taxes equals the sum of the "(Employee)" columns, Employer Taxes the sum of the "(Employer)" columns, on the totals row. Checked; a mismatch is a WARNING.
+- From the real file: Net Pay = Gross Earnings - Employee Taxes and Employer Cost = Gross Earnings + Employer Taxes when there are no deductions or benefits; Check Amount = Net Pay when there are no reimbursements or donations.
+
+## Journal entry per payroll (dated on the pay day)
+| Line | Amount | Debit / credit | Account key |
+|---|---|---|---|
+| Gross wages | Gross Earnings | debit (expense) | wages |
+| Employer payroll taxes (expense) | Employer Taxes | debit | payrollTaxExpense |
+| Employer benefit contributions (expense, derived) | Employer Cost - Gross - Employer Taxes | debit | benefitsExpense |
+| Reimbursements paid to employees | Reimbursements | debit | reimbursements |
+| Employee taxes withheld | Employee Taxes | credit (liability) | payrollTaxesPayable |
+| Employer payroll taxes owed | Employer Taxes | credit | payrollTaxesPayable |
+| Employee deductions withheld (derived) | Gross - Employee Taxes - Net Pay | credit | payrollDeductions |
+| Employer benefit contributions owed (derived) | same as the expense line | credit | payrollDeductions |
+| Net pay paid (bank) | Payroll Totals Check Amount | credit | bank |
+| Gap | lines minus Check Amount | either | clearing, with a WARNING |
+The lines are summed from the employee rows; the bank line is the report's own Check Amount total, so any disagreement shows as the gap line.
+
+## UNVERIFIED, refused or left to a warning
+- Deduction and employer contribution column names in the CSV: not sourced, not read. Both amounts are derived from the sourced totals and a note gives them whenever they are not zero.
+- Whether Check Amount = Net Pay + Reimbursements, and whether Employer Cost includes reimbursements: not seen with non-zero reimbursements; the first is checked (gap to clearing with a WARNING), the second is a note.
+- Donations: not booked; a note names them; any effect on the check lands on the gap line.
+- Several "Employee Earnings" blocks in one file: described by the real file's author, not seen by us. Each becomes its own entry.
+- Refused: the Payroll Journal layout with Job / Pay Type / Hours / Rate / Amount lines and no Gross Earnings column (only a synthetic replica is public). Not supported, with no sourced layout: ADP RUN and Workforce Now payroll register, Paychex Flex payroll journal, Paylocity, OnPay, Patriot, Square Payroll, QuickBooks Payroll.
+- Tax and benefit payments are not in the report and are not booked; the liabilities stay open until the user records each payment.

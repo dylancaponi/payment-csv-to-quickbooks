@@ -19,10 +19,11 @@ import * as mt940 from './src/sources/mt940.js';
 import * as camt from './src/sources/camt.js';
 import * as amazon from './src/sources/amazon.js';
 import * as ebay from './src/sources/ebay.js';
+import * as gusto from './src/sources/gusto.js';
 import { writeOfx } from './src/targets/ofx.js';
 import { writeQboCsv, writeXeroCsv } from './src/targets/csvbank.js';
 import { writeSpreadsheetCsv } from './src/targets/spreadsheet.js';
-import { writeJournal } from './src/targets/journal.js';
+import { writeJournal, isPayroll } from './src/targets/journal.js';
 import { summarizePayouts as summarize } from './src/payouts.js';
 import { normalizeTxns } from './src/targets/common.js';
 import { checkParseOptions } from './src/locale.js';
@@ -47,6 +48,7 @@ const PARSERS = {
   wise: { detect: (rows) => wise.detect(rows), parse: wise.parse },
   'amazon-settlement': { detect: (rows) => amazon.detect(rows), parse: amazon.parse },
   ebay: { detect: (rows) => ebay.detect(rows), parse: ebay.parse },
+  'gusto-payroll': { detect: (rows) => gusto.detect(rows), parse: gusto.parse },
   'generic-bank': { detect: (rows) => generic.detect(rows), parse: generic.parse },
 };
 
@@ -98,7 +100,7 @@ function rowsOf(text, options = {}) {
 // sales, Shopify orders and products): a plain "wrong export" message instead
 // of a bank-CSV guess.
 function wrongExportReason(rows) {
-  for (const f of [square.wrongExport, shopify.wrongExport, amazon.wrongExport, ebay.wrongExport]) {
+  for (const f of [square.wrongExport, shopify.wrongExport, amazon.wrongExport, ebay.wrongExport, gusto.wrongExport]) {
     let r = null;
     try { r = f(rows); } catch { r = null; }
     if (r) return r;
@@ -227,7 +229,8 @@ function parseImpl(sourceId, text, options = {}) {
     if (wrong) fail('WRONG_SOURCE', wrong);
   }
   const ctx = { meta: {}, delimiter: raw.delimiter };
-  const rows = dropRepeatedHeaders(raw, warnings);
+  // A Gusto payroll journal repeats its header once per pay schedule on purpose.
+  const rows = id === 'gusto-payroll' ? raw : dropRepeatedHeaders(raw, warnings);
   const popts = { ...options, _ctx: ctx };
   const rounded = new Map();
   setRoundingReporter((orig, cents) => { if (!rounded.has(orig)) rounded.set(orig, cents); });
@@ -264,6 +267,10 @@ function dedupe(arr) {
 function writeImpl(targetId, transactions, options = {}) {
   if (options === null || typeof options !== 'object') fail('BAD_OPTION', 'Options must be an object.');
   let res;
+  // A payroll report is not a bank statement: refused for every bank file.
+  if (['qbo', 'qfx', 'ofx', 'qbo-csv-3', 'qbo-csv-4', 'xero-csv'].includes(targetId) && Array.isArray(transactions) && isPayroll(transactions, options)) {
+    fail('NOT_SUPPORTED', 'Bank files (.qbo, .qfx, .ofx, QuickBooks Online bank CSV, Xero bank CSV) are not available for a Gusto payroll report: it is not a bank statement, and importing wages and taxes into a bank account would put them in the wrong place. Choose the QuickBooks journal entry or the spreadsheet CSV instead.');
+  }
   switch (targetId) {
     case 'qbo':
     case 'qfx':
